@@ -1,0 +1,24 @@
+name: Elevator
+version: 2.3
+authors: [Baktus_79, Synnelele]
+main: no.vestlandetmc.elevator.ElevatorPlugin
+description: A simple elevator that uses blocks to teleport.
+website: www.vestlandetmc.no
+prefix: Elevator
+api-version: 1.13
+softdepend: [GriefPrevention, WorldGuard]
+commands:
+  elevator:
+    description: Get information about the plugin and reload the plugin
+    usage: /<command>
+    permission: elevator.admin
+  teleporter:
+    description: Get information about the plugin and reload the plugin
+    usage: /<command>
+    permission: elevator.teleporter.use
+permissions:
+  elevator.admin:
+    description: Gives access to all permissions
+    children:
+      elevator.use: true
+      elevator.teleporter.use: true

@@ -1,0 +1,25 @@
+BlockType: IRON_BLOCK
+EnableParticle: true
+ParticleType: SPELL_WITCH
+ParticleCount: 20
+UsageSound: entity.enderman.teleport
+ActivateSound: entity.player.levelup
+Teleporter:
+  BlockType: SEA_LANTERN
+  EnableParticle: true
+  ParticleType: PORTAL
+  ParticleCount: 20
+  UsageSound: entity.enderman.teleport
+Hooks:
+  GriefPrevention: true
+  WorldGuard: true
+Cooldown:
+  EnableCooldown: false
+  Time: 30
+ElevatorUp: "&aGoing up"
+ElevatorDown: "&aGoing down"
+ElevatorDanger: "&4Danger! You cannot use the elevator to this location. You might die!"
+ElevatorActivated: "&aThe elevator is active"
+ElevatorCooldown: "&cElevator is on cooldown. Please wait for another %time% seconds!"
+TeleporterUsage: "&aStand still for 3 seconds while the teleporter charge"
+TeleporterDanger: "&cDanger! The location is not safe! Please remove blocks away from the teleporter."
