@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import no.vestlandetmc.elevator.Listener.ElevatorListener;
 import no.vestlandetmc.elevator.Listener.TeleporterListener;
 import no.vestlandetmc.elevator.commands.ElevatorCommand;
+import no.vestlandetmc.elevator.commands.TabCompleteArgs;
 import no.vestlandetmc.elevator.commands.TeleporterCommand;
 import no.vestlandetmc.elevator.config.Config;
 import no.vestlandetmc.elevator.handler.MessageHandler;
@@ -62,6 +63,7 @@ public class ElevatorPlugin extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new TeleporterListener(), this);
 		this.getCommand("elevator").setExecutor(new ElevatorCommand());
 		this.getCommand("teleporter").setExecutor(new TeleporterCommand());
+		this.getCommand("teleporter").setTabCompleter(new TabCompleteArgs());
 
 		new UpdateNotification(67723) {
 

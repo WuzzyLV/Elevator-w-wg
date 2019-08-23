@@ -41,7 +41,8 @@ public class Config extends ConfigHandler {
 	GRIEFPREVENTION_HOOK,
 	WORLDGUARD_HOOK,
 	COOLDOWN_ENABLED,
-	TP_PARTICLE_ENABLE;
+	TP_PARTICLE_ENABLE,
+	TP_WARMUP_ENABLE;
 
 	private void onLoad() {
 

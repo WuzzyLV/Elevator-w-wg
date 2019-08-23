@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
@@ -12,6 +13,7 @@ import no.vestlandetmc.elevator.config.Config;
 import no.vestlandetmc.elevator.config.TeleporterData;
 import no.vestlandetmc.elevator.handler.Cooldown;
 import no.vestlandetmc.elevator.handler.GPHandler;
+import no.vestlandetmc.elevator.handler.MessageHandler;
 import no.vestlandetmc.elevator.handler.WGHandler;
 import no.vestlandetmc.elevator.hooks.GriefPreventionHook;
 import no.vestlandetmc.elevator.hooks.WorldGuardHook;
@@ -21,7 +23,22 @@ public class TeleporterListener implements Listener {
 
 	@EventHandler
 	public void onPlayerMoveEvent(PlayerMoveEvent e) {
+		if(e.getFrom().getX() != e.getTo().getX() || e.getFrom().getZ() != e.getTo().getZ()) {
+			if (TeleporterData.teleporterMove(e.getPlayer())) {
+				MessageHandler.sendAction(e.getPlayer(), "&cTeleportation cancelled!");
+			}
+		}
+	}
 
+	@EventHandler
+	public void onTeleporterBreak(BlockBreakEvent e) {
+		if(e.getBlock().getType() == Config.TP_BLOCK_TYPE) {
+			final String tpName = TeleporterData.getTeleporter(e.getBlock().getLocation());
+
+			if(tpName == null) { return; }
+
+			TeleporterData.deleteTeleporter(tpName);
+		}
 	}
 
 	@EventHandler
@@ -44,11 +61,14 @@ public class TeleporterListener implements Listener {
 
 					final String tpName = TeleporterData.getTeleporter(loc);
 
-					if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(e.getPlayer()) && !GPHandler.haveTrust(e.getPlayer())) return; }
-					if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(e.getPlayer()) && !WGHandler.haveTrust(e.getPlayer())) return; }
+					if (!(tpName == null)) {
+						if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(e.getPlayer()) && !GPHandler.haveTrust(e.getPlayer())) return; }
+						if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(e.getPlayer()) && !WGHandler.haveTrust(e.getPlayer())) return; }
 
-					e.getPlayer().teleport(TeleporterData.getTeleportLoc(tpName));
-
+						if(TeleporterData.getTeleportLoc(tpName) != null) {
+							TeleporterData.teleporterUsed(e.getPlayer(), tpName);
+						}
+					}
 				}
 			}
 		}

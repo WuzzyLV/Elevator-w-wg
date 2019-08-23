@@ -51,7 +51,11 @@ public class TeleporterCommand implements CommandExecutor {
 
 	private void add(CommandSender sender) {
 		final Player player = (Player) sender;
-		TeleporterData.setTeleporter(player);
+		if(TeleporterData.checkTpPerms(player)) {
+			TeleporterData.setTeleporter(player);
+		} else {
+			MessageHandler.sendMessage(player, "&cYou dont have permission to set more teleporters!");
+		}
 	}
 
 	private void remove(CommandSender sender, String tpName) {
@@ -79,10 +83,14 @@ public class TeleporterCommand implements CommandExecutor {
 		final Player player = (Player) sender;
 		if (player instanceof Player) {
 			MessageHandler.sendMessage(player, "&e---- ====== [ &6Teleporters &e] ====== ---- ");
-			MessageHandler.sendMessage(player, "");
+			MessageHandler.sendMessage(player, "&6/teleporter add &f- &eSet teleportation block");
+			MessageHandler.sendMessage(player, "&6/teleporter help &f- &eThis help page");
+			MessageHandler.sendMessage(player, "&6/teleporter link &f[tpblock1] [tpblock2] - &eLink two teleportation blocks togheter");
+			MessageHandler.sendMessage(player, "&6/teleporter list &f- &eGet a list of all your teleporters");
+			MessageHandler.sendMessage(player, "&6/teleporter remove &f- &eRemove a teleportation block");
+			MessageHandler.sendMessage(player, "&6/teleporter unlink &f[tpblock1] - &eUnlink two teleportation blocks. Only need to specify one.");
 		} else {
 			MessageHandler.sendConsole("&cYou must use this command as a player in-game");
 		}
 	}
-
 }

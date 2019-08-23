@@ -10,6 +10,7 @@ Teleporter:
   ParticleType: PORTAL
   ParticleCount: 20
   UsageSound: entity.enderman.teleport
+  WarmupTime: 3
 Hooks:
   GriefPrevention: true
   WorldGuard: true
