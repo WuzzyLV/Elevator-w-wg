@@ -2,7 +2,9 @@ package no.vestlandetmc.elevator.config;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -202,13 +204,19 @@ public class TeleporterData {
 			return;
 		}
 
+		if(ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tp1 + ".Destination") ||
+				ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tp2 + ".Destination")) {
+			MessageHandler.sendMessage(player, "&cOne or more teleporters are already linked.");
+			return;
+		}
+
 		if (!checkTpOwner(player, tp1.toUpperCase(), tp2.toUpperCase())) {
 			MessageHandler.sendMessage(player, "&cYou have no rights to link those teleporters");
 			return;
 		}
 
-		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tp1 + "." + "Destination", tp2);
-		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tp2 + "." + "Destination", tp1);
+		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tp1 + ".Destination", tp2);
+		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tp2 + ".Destination", tp1);
 
 		MessageHandler.sendMessage(player, "&eYou have successfully linked teleporter &6" + tp1 + " &ewith &6" + tp2);
 
@@ -305,6 +313,16 @@ public class TeleporterData {
 		}
 
 		if(count == 0) { MessageHandler.sendMessage(player, "&cYou don't have any teleporters yet"); }
+	}
+
+	public static List<String> tabCompleteTp(Player player) {
+		final List<String> teleportList = new ArrayList<>();
+		for(final String tp : ElevatorPlugin.getInstance().getDataFile().getConfigurationSection("Teleporters").getKeys(false)) {
+			if(checkTpOwner(player, tp.toUpperCase())) {
+				teleportList.add(tp.toLowerCase());
+			}
+		}
+		return teleportList;
 	}
 
 	private static boolean checkTpOwner(Player player, String tp1, String tp2) {
