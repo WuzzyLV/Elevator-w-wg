@@ -30,8 +30,12 @@ public class MessageHandler {
 		return ChatColor.translateAlternateColorCodes('&', message);
 	}
 
-	public static String placeholders(String message, String time) {
-		final String converted = message.replaceAll("%time%", time);
+	public static String placeholders(String message, String time, String tpName, String tp1, String tp2) {
+		final String converted = message.
+				replaceAll("%time%", time).
+				replaceAll("%tpname%", tpName).
+				replaceAll("%teleport1%", tp1).
+				replaceAll("%teleport2%", tp2);
 
 		return converted;
 

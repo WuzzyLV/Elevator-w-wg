@@ -5,8 +5,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import no.vestlandetmc.elevator.config.Config;
 import no.vestlandetmc.elevator.config.TeleporterData;
+import no.vestlandetmc.elevator.handler.GPHandler;
 import no.vestlandetmc.elevator.handler.MessageHandler;
+import no.vestlandetmc.elevator.handler.WGHandler;
+import no.vestlandetmc.elevator.hooks.GriefPreventionHook;
+import no.vestlandetmc.elevator.hooks.WorldGuardHook;
 
 public class TeleporterCommand implements CommandExecutor {
 
@@ -23,7 +28,7 @@ public class TeleporterCommand implements CommandExecutor {
 			break;
 		case "remove":
 			if(args.length != 2) {
-				MessageHandler.sendMessage((Player) sender, "&cPlease specify a teleporter!");
+				MessageHandler.sendMessage((Player) sender, Config.TP_LOCAL_SPECIFYTP);
 				break;
 			} else {
 				remove(sender, args[1].toUpperCase());
@@ -31,7 +36,7 @@ public class TeleporterCommand implements CommandExecutor {
 			}
 		case "link":
 			if(args.length != 3) {
-				MessageHandler.sendMessage((Player) sender, "&cPlease specify at least two teleporters!");
+				MessageHandler.sendMessage((Player) sender, Config.TP_LOCAL_SPECIFYMORETP);
 				break;
 			} else {
 				link(sender, args[1].toUpperCase(), args[2].toUpperCase());
@@ -39,7 +44,7 @@ public class TeleporterCommand implements CommandExecutor {
 			}
 		case "unlink":
 			if(args.length != 2) {
-				MessageHandler.sendMessage((Player) sender, "&cPlease specify a teleporter!");
+				MessageHandler.sendMessage((Player) sender, Config.TP_LOCAL_SPECIFYTP);
 				break;
 			} else {
 				unlink(sender, args[1].toUpperCase());
@@ -57,10 +62,14 @@ public class TeleporterCommand implements CommandExecutor {
 
 	private void add(CommandSender sender) {
 		final Player player = (Player) sender;
+
+		if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(player) && !GPHandler.haveTrust(player)) return; }
+		if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(player) && !WGHandler.haveTrust(player)) return; }
+
 		if(TeleporterData.checkTpPerms(player)) {
 			TeleporterData.setTeleporter(player);
 		} else {
-			MessageHandler.sendMessage(player, "&cYou dont have permission to set more teleporters!");
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_PERMBLOCK);
 		}
 	}
 
@@ -88,13 +97,13 @@ public class TeleporterCommand implements CommandExecutor {
 	private void help(CommandSender sender) {
 		final Player player = (Player) sender;
 		if (player instanceof Player) {
-			MessageHandler.sendMessage(player, "&e---- ====== [ &6Teleporters &e] ====== ---- ");
-			MessageHandler.sendMessage(player, "&6/teleporter add &f- &eSet teleportation block");
-			MessageHandler.sendMessage(player, "&6/teleporter help &f- &eThis help page");
-			MessageHandler.sendMessage(player, "&6/teleporter link &f[tpblock1] [tpblock2] - &eLink two teleportation blocks togheter");
-			MessageHandler.sendMessage(player, "&6/teleporter list &f- &eGet a list of all your teleporters");
-			MessageHandler.sendMessage(player, "&6/teleporter remove &f- &eRemove a teleportation block");
-			MessageHandler.sendMessage(player, "&6/teleporter unlink &f[tpblock1] - &eUnlink two teleportation blocks. Only need to specify one.");
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_HELPHEADER);
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_HELPADD);
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_HELPHELP);
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_HELPLINK);
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_HELPLIST);
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_HELPREMOVE);
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_HELPUNLINK);
 		} else {
 			MessageHandler.sendConsole("&cYou must use this command as a player in-game");
 		}

@@ -25,7 +25,7 @@ public class TeleporterListener implements Listener {
 	public void onPlayerMoveEvent(PlayerMoveEvent e) {
 		if(e.getFrom().getX() != e.getTo().getX() || e.getFrom().getZ() != e.getTo().getZ()) {
 			if (TeleporterData.teleporterMove(e.getPlayer())) {
-				MessageHandler.sendAction(e.getPlayer(), "&cTeleportation cancelled!");
+				MessageHandler.sendAction(e.getPlayer(), Config.TP_LOCAL_CANCELLED);
 			}
 		}
 	}
@@ -46,12 +46,6 @@ public class TeleporterListener implements Listener {
 		if (!e.getPlayer().isSneaking()) {
 			if(Mechanics.standOnBlock(e.getPlayer(), e.getPlayer().getWorld(), Config.TP_BLOCK_TYPE)) {
 				if (e.getPlayer().hasPermission("elevator.teleporter.use")) {
-					if (Config.COOLDOWN_ENABLED) {
-						if (Cooldown.elevatorUsed(e.getPlayer())) {
-							return;
-						}
-					}
-
 					final double locX = e.getPlayer().getWorld().getBlockAt(e.getPlayer().getLocation()).getX();
 					final double locY = e.getPlayer().getWorld().getBlockAt(e.getPlayer().getLocation().add(0.0D, -1.0D, 0.0D)).getY();
 					final double locZ = e.getPlayer().getWorld().getBlockAt(e.getPlayer().getLocation()).getZ();
@@ -62,6 +56,14 @@ public class TeleporterListener implements Listener {
 					final String tpName = TeleporterData.getTeleporter(loc);
 
 					if (!(tpName == null)) {
+						if(Mechanics.dangerBlock(TeleporterData.getTeleportLoc(tpName))) {
+							MessageHandler.sendMessage(e.getPlayer(), Config.TP_LOCAL_DANGER);
+							return;
+						} else if (Config.COOLDOWN_ENABLED) {
+							if (Cooldown.elevatorUsed(e.getPlayer())) {
+								return;
+							}
+						}
 						if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(e.getPlayer()) && !GPHandler.haveTrust(e.getPlayer())) return; }
 						if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(e.getPlayer()) && !WGHandler.haveTrust(e.getPlayer())) return; }
 

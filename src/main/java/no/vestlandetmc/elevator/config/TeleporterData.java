@@ -42,14 +42,14 @@ public class TeleporterData {
 					if(warmupTime(player) <= 0) {
 						warmUpTeleporter.remove(player.getUniqueId().toString());
 						player.teleport(getTeleportLoc(tpName));
-						particleTeleporter(player);
+						if(Config.TP_PARTICLE_ENABLE) { particleTeleporter(player); }
 						player.getWorld().playSound(player.getLocation(), "minecraft:" + Config.TP_SOUND, 1.0F, 0.7F);
-						MessageHandler.sendAction(player, "&bTeleportation initialized");
+						MessageHandler.sendAction(player, Config.TP_LOCAL_INIT);
 						this.cancel();
 						return;
 					}
-					particleTeleporter(player);
-					MessageHandler.sendAction(player, "&bPlease wait &9" + warmupTime(player) + " &bseconds while the teleporter initialize! Don't move!");
+					if(Config.TP_PARTICLE_ENABLE) { particleTeleporter(player); }
+					MessageHandler.sendAction(player, MessageHandler.placeholders(Config.TP_LOCAL_WARMUP, warmupTime(player).toString(), null, null, null));
 				}
 
 			}.runTaskTimer(ElevatorPlugin.getInstance(), 0L, 2L);
@@ -66,8 +66,9 @@ public class TeleporterData {
 	}
 
 	private static Long warmupTime(Player player) {
+		if(Config.TP_WARMUP_ENABLE) { return 0L; }
 		if(warmUpTeleporter.containsKey(player.getUniqueId().toString())) {
-			final long timeSeconds = 3 - ((System.currentTimeMillis() / 1000) - warmUpTeleporter.get(player.getUniqueId().toString()));
+			final long timeSeconds = Config.TP_WARMUP_TIME - ((System.currentTimeMillis() / 1000) - warmUpTeleporter.get(player.getUniqueId().toString()));
 			return timeSeconds;
 		}
 
@@ -96,14 +97,14 @@ public class TeleporterData {
 		final String world = player.getLocation().getWorld().getName();
 
 		if (!Mechanics.standOnBlock(player, player.getWorld(), Config.TP_BLOCK_TYPE)) {
-			MessageHandler.sendMessage(player, "&cNot a valid teleporter block detected!");
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_UNVALID);
 			return;
 		}
 
 		final Location loc  = new Location(Bukkit.getWorld(world), locX, locY, locZ);
 
 		if(teleporterExist(loc)) {
-			MessageHandler.sendMessage(player, "&cThis teleporter already exist!");
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_EXIST);
 			return;
 		}
 
@@ -135,7 +136,7 @@ public class TeleporterData {
 			ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName + "." + "World", world);
 			ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName + "." + "Player", player.getUniqueId().toString());
 
-			MessageHandler.sendMessage(player, "&eTeleporter has been added as &6" + tpName);
+			MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.TP_LOCAL_ADDED, null, tpName, null, null));
 
 			saveDatafile();
 		}
@@ -200,37 +201,37 @@ public class TeleporterData {
 	public static void linkTeleporter(Player player, String tp1, String tp2) {
 		if(!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tp1) ||
 				!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tp2)) {
-			MessageHandler.sendMessage(player, "&cOne or more teleporters does not exist. Check for spelling errors.");
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_UNEXIST);
 			return;
 		}
 
 		if(ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tp1 + ".Destination") ||
 				ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tp2 + ".Destination")) {
-			MessageHandler.sendMessage(player, "&cOne or more teleporters are already linked.");
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_LINKEXIST);
 			return;
 		}
 
 		if (!checkTpOwner(player, tp1.toUpperCase(), tp2.toUpperCase())) {
-			MessageHandler.sendMessage(player, "&cYou have no rights to link those teleporters");
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_NOOWNER);
 			return;
 		}
 
 		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tp1 + ".Destination", tp2);
 		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tp2 + ".Destination", tp1);
 
-		MessageHandler.sendMessage(player, "&eYou have successfully linked teleporter &6" + tp1 + " &ewith &6" + tp2);
+		MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.TP_LOCAL_LINKED, null, null, tp1, tp2));
 
 		saveDatafile();
 	}
 
 	public static void deleteTeleporter(Player player, String tpName) {
 		if (!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName)) {
-			MessageHandler.sendMessage(player, "&cOne or more teleporters does not exist. Check for spelling errors.");
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_UNEXIST);
 			return;
 		}
 
 		if (!checkTpOwner(player, tpName)) {
-			MessageHandler.sendMessage(player, "&cYou have no rights to delete this teleporter");
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_NOOWNER);
 			return;
 		}
 
@@ -241,7 +242,7 @@ public class TeleporterData {
 
 		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName, null);
 
-		MessageHandler.sendMessage(player, "&eTeleporter &6" + tpName + " &ehas been removed");
+		MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.TP_LOCAL_REMOVED, null, tpName, null, null));
 
 		saveDatafile();
 	}
@@ -263,12 +264,12 @@ public class TeleporterData {
 
 	public static void unlinkTeleporter(Player player, String tpName) {
 		if (!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName)) {
-			MessageHandler.sendMessage(player, "&cOne or more teleporters does not exist. Check for spelling errors.");
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_UNEXIST);
 			return;
 		}
 
 		if (!checkTpOwner(player, tpName)) {
-			MessageHandler.sendMessage(player, "&cYou have no rights to delete this teleporter");
+			MessageHandler.sendMessage(player, Config.TP_LOCAL_NOOWNER);
 			return;
 		}
 
@@ -278,16 +279,16 @@ public class TeleporterData {
 			ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName + "." + "Destination", null);
 			ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName2 + "." + "Destination", null);
 
-			MessageHandler.sendMessage(player, "&6" + tpName + "&ehas successfully unlinked with &6" + tpName2);
+			MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.TP_LOCAL_UNLINKED, null, null, tpName, tpName2));
 
 			saveDatafile();
-		} else { MessageHandler.sendMessage(player, "&c" + tpName + " has no destination!"); }
+		} else { MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.TP_LOCAL_NODEST, null, tpName, null, null)); }
 	}
 
 	public static void listTP(Player player) {
 		int count = 0;
 
-		MessageHandler.sendMessage(player, "&e---- ====== [ &6Your teleporters &e] ====== ----");
+		MessageHandler.sendMessage(player, Config.TP_LOCAL_LISTHEADER);
 		for(final String tp : ElevatorPlugin.getInstance().getDataFile().getConfigurationSection("Teleporters").getKeys(false)) {
 			final double locX = ElevatorPlugin.getInstance().getDataFile().getDouble("Teleporters." + tp + "." + "X");
 			final double locY = ElevatorPlugin.getInstance().getDataFile().getDouble("Teleporters." + tp + "." + "Y");
@@ -312,7 +313,7 @@ public class TeleporterData {
 
 		}
 
-		if(count == 0) { MessageHandler.sendMessage(player, "&cYou don't have any teleporters yet"); }
+		if(count == 0) { MessageHandler.sendMessage(player, Config.TP_LOCAL_LISTNOTP); }
 	}
 
 	public static List<String> tabCompleteTp(Player player) {

@@ -34,7 +34,7 @@ public class Cooldown {
 
 	private static void spamPrevent(Player player) {
 		if(!MessageHandler.spamMessageCooldown.contains(player.getUniqueId().toString())) {
-			MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.ELEVATOR_COOLDOWN, getCooldownTime(player)));
+			MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.ELEVATOR_COOLDOWN, getCooldownTime(player), null, null, null));
 			MessageHandler.spamMessageCooldown.add(player.getUniqueId().toString());
 
 			new BukkitRunnable() {
