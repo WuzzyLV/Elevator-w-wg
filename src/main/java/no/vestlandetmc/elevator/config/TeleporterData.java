@@ -98,6 +98,13 @@ public class TeleporterData {
 			return;
 		}
 
+		final Location loc  = new Location(Bukkit.getWorld(world), locX, locY, locZ);
+
+		if(teleporterExist(loc)) {
+			MessageHandler.sendMessage(player, "&cThis teleporter already exist!");
+			return;
+		}
+
 		int tpNumberMax = 1;
 
 		if(ElevatorPlugin.getInstance().getDataFile().contains("Teleporters")) {
@@ -166,6 +173,26 @@ public class TeleporterData {
 		}
 
 		return null;
+	}
+
+	private static boolean teleporterExist(Location loc) {
+		if(!(ElevatorPlugin.getInstance().getDataFile().getKeys(false).toArray().length == 0) ||
+				!(ElevatorPlugin.getInstance().getDataFile().getConfigurationSection("Teleporters").getKeys(false).toArray().length == 0)) {
+			for(final String tp : ElevatorPlugin.getInstance().getDataFile().getConfigurationSection("Teleporters").getKeys(false)) {
+				final double locX = ElevatorPlugin.getInstance().getDataFile().getDouble("Teleporters." + tp + "." + "X");
+				final double locY = ElevatorPlugin.getInstance().getDataFile().getDouble("Teleporters." + tp + "." + "Y");
+				final double locZ = ElevatorPlugin.getInstance().getDataFile().getDouble("Teleporters." + tp + "." + "Z");
+				final World world = Bukkit.getWorld(ElevatorPlugin.getInstance().getDataFile().getString("Teleporters." + tp + ".World"));
+
+				final Location tpLoc = new Location(world, locX, locY, locZ);
+
+				if(tpLoc.toString().equals(loc.toString())) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	public static void linkTeleporter(Player player, String tp1, String tp2) {
