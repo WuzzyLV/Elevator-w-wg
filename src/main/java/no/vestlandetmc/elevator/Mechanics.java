@@ -85,6 +85,15 @@ public class Mechanics {
 
 	}
 
+	public static boolean dangerBlock(Location loc) {
+		if(existMaterial(loc.getWorld().getBlockAt(loc.add(0.0D, 1.0D, 0.0D)).getType().name()) || existMaterial(loc.getWorld().getBlockAt(loc.add(0.0D, 2.0D, 0.0D)).getType().name())) {
+			return true;
+		}
+
+		return false;
+
+	}
+
 	private static boolean existMaterial(String check) {
 		try {
 			allowedMaterial.valueOf(check);
@@ -107,7 +116,7 @@ public class Mechanics {
 	}
 
 	public static void particles(Player player, Location loc) {
-		if (Config.PARTICAL_ENABLED) {
+		if (Config.PARTICLE_ENABLED) {
 			player.spawnParticle(Config.PARTICLE_TYPE, loc, Config.PARTICLE_COUNT);
 			for (final Entity en : player.getNearbyEntities(10D, 10D, 10D)) {
 				if (en instanceof Player) {
