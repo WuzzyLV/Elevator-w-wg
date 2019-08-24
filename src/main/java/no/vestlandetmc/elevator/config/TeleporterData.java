@@ -94,7 +94,7 @@ public class TeleporterData {
 		final String world = player.getLocation().getWorld().getName();
 
 		if (!Mechanics.standOnBlock(player, player.getWorld(), Config.TP_BLOCK_TYPE)) {
-			MessageHandler.sendMessage(player, "&4Not a valid teleporter block detected!");
+			MessageHandler.sendMessage(player, "&cNot a valid teleporter block detected!");
 			return;
 		}
 
@@ -169,25 +169,27 @@ public class TeleporterData {
 	}
 
 	public static void linkTeleporter(Player player, String tp1, String tp2) {
-		if (!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tp1.toUpperCase()) &&
-				!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tp2.toUpperCase())) {
+		if(!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tp1) ||
+				!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tp2)) {
 			MessageHandler.sendMessage(player, "&cOne or more teleporters does not exist. Check for spelling errors.");
 			return;
 		}
 
-		if (!checkTpOwner(player, tp1, tp2)) {
+		if (!checkTpOwner(player, tp1.toUpperCase(), tp2.toUpperCase())) {
 			MessageHandler.sendMessage(player, "&cYou have no rights to link those teleporters");
 			return;
 		}
 
-		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tp1.toUpperCase() + "." + "Destination", tp2.toUpperCase());
-		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tp2.toUpperCase() + "." + "Destination", tp1.toUpperCase());
+		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tp1 + "." + "Destination", tp2);
+		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tp2 + "." + "Destination", tp1);
+
+		MessageHandler.sendMessage(player, "&eYou have successfully linked teleporter &6" + tp1 + " &ewith &6" + tp2);
 
 		saveDatafile();
 	}
 
 	public static void deleteTeleporter(Player player, String tpName) {
-		if (!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName.toUpperCase())) {
+		if (!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName)) {
 			MessageHandler.sendMessage(player, "&cOne or more teleporters does not exist. Check for spelling errors.");
 			return;
 		}
@@ -197,35 +199,35 @@ public class TeleporterData {
 			return;
 		}
 
-		if (ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName.toUpperCase() + ".Destination")) {
+		if (ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName + ".Destination")) {
 			final String tpName2 = ElevatorPlugin.getInstance().getDataFile().getString("Teleporters." + tpName + ".Destination");
 			ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName2 + ".Destination", null);
 		}
 
-		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName.toUpperCase(), null);
+		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName, null);
 
-		MessageHandler.sendMessage(player, "&eTeleporter &6" + tpName.toUpperCase() + " &ehas been removed");
+		MessageHandler.sendMessage(player, "&eTeleporter &6" + tpName + " &ehas been removed");
 
 		saveDatafile();
 	}
 
 	public static void deleteTeleporter(String tpName) {
-		if (!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName.toUpperCase())) {
+		if (!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName)) {
 			return;
 		}
 
-		if (ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName.toUpperCase() + ".Destination")) {
+		if (ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName + ".Destination")) {
 			final String tpName2 = ElevatorPlugin.getInstance().getDataFile().getString("Teleporters." + tpName + ".Destination");
 			ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName2 + ".Destination", null);
 		}
 
-		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName.toUpperCase(), null);
+		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName, null);
 
 		saveDatafile();
 	}
 
 	public static void unlinkTeleporter(Player player, String tpName) {
-		if (!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName.toUpperCase())) {
+		if (!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName)) {
 			MessageHandler.sendMessage(player, "&cOne or more teleporters does not exist. Check for spelling errors.");
 			return;
 		}
@@ -235,15 +237,21 @@ public class TeleporterData {
 			return;
 		}
 
-		final String tpName2 = ElevatorPlugin.getInstance().getDataFile().getString("Teleporters." + tpName.toUpperCase() + "." + "Destination");
+		if(ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName + "." + "Destination")) {
+			final String tpName2 = ElevatorPlugin.getInstance().getDataFile().getString("Teleporters." + tpName + "." + "Destination");
 
-		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName.toUpperCase() + "." + "Destination", null);
-		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName2.toUpperCase() + "." + "Destination", null);
+			ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName + "." + "Destination", null);
+			ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName2 + "." + "Destination", null);
 
-		saveDatafile();
+			MessageHandler.sendMessage(player, "&6" + tpName + "&ehas successfully unlinked with &6" + tpName2);
+
+			saveDatafile();
+		} else { MessageHandler.sendMessage(player, "&c" + tpName + " has no destination!"); }
 	}
 
 	public static void listTP(Player player) {
+		int count = 0;
+
 		MessageHandler.sendMessage(player, "&e---- ====== [ &6Your teleporters &e] ====== ----");
 		for(final String tp : ElevatorPlugin.getInstance().getDataFile().getConfigurationSection("Teleporters").getKeys(false)) {
 			final double locX = ElevatorPlugin.getInstance().getDataFile().getDouble("Teleporters." + tp + "." + "X");
@@ -257,9 +265,10 @@ public class TeleporterData {
 				link = null;
 			}
 
-			if(!checkTpOwner(player, tp)) {
+			if(!checkTpOwner(player, tp.toUpperCase())) {
 				continue;
-			}
+			} else { count++; }
+
 			if(link == null) {
 				MessageHandler.sendMessage(player, "&6" + tp + " &eX:&6" + locX + " &eY:&6" + locY + " &eZ:&6" + locZ + " &ein world &6" + world);
 			} else {
@@ -267,11 +276,13 @@ public class TeleporterData {
 			}
 
 		}
+
+		if(count == 0) { MessageHandler.sendMessage(player, "&cYou don't have any teleporters yet"); }
 	}
 
 	private static boolean checkTpOwner(Player player, String tp1, String tp2) {
-		final String ownerTp1 = ElevatorPlugin.getInstance().getDataFile().getString("Teleporters." + tp1.toUpperCase() + "." + "Player");
-		final String ownerTp2 = ElevatorPlugin.getInstance().getDataFile().getString("Teleporters." + tp2.toUpperCase() + "." + "Player");
+		final String ownerTp1 = ElevatorPlugin.getInstance().getDataFile().getString("Teleporters." + tp1 + "." + "Player");
+		final String ownerTp2 = ElevatorPlugin.getInstance().getDataFile().getString("Teleporters." + tp2 + "." + "Player");
 
 		if (!ownerTp1.equals(player.getUniqueId().toString()) && !ownerTp2.equals(player.getUniqueId().toString())) {
 			return false;
@@ -281,7 +292,7 @@ public class TeleporterData {
 	}
 
 	private static boolean checkTpOwner(Player player, String tp) {
-		final String ownerTp = ElevatorPlugin.getInstance().getDataFile().getString("Teleporters." + tp.toUpperCase() + "." + "Player");
+		final String ownerTp = ElevatorPlugin.getInstance().getDataFile().getString("Teleporters." + tp + "." + "Player");
 
 		if (ownerTp.equals(player.getUniqueId().toString())) {
 			return true;
@@ -294,12 +305,14 @@ public class TeleporterData {
 		int allowedTeleporters = 0;
 		int teleporterCount = 0;
 		for(final PermissionAttachmentInfo perms : player.getEffectivePermissions()) {
-			if(perms.getPermission().replaceAll("\\d", "").equals("elevator.teleporters.")) {
+			if(perms.getPermission().replaceAll("\\d", "").equals("elevator.teleporter.set.")) {
 				if(Integer.parseInt(perms.getPermission().replaceAll("\\D", "")) > allowedTeleporters) {
 					allowedTeleporters = Integer.parseInt(perms.getPermission().replaceAll("\\D", ""));
 				}
 			}
 		}
+
+		if(allowedTeleporters == 0) { return false; }
 
 		for(final String tp : ElevatorPlugin.getInstance().getDataFile().getConfigurationSection("Teleporters").getKeys(false)) {
 			if(checkTpOwner(player, tp)) {
@@ -311,6 +324,13 @@ public class TeleporterData {
 		}
 
 		return true;
+	}
+
+	public static void createSection() {
+		if(ElevatorPlugin.getInstance().getDataFile().getKeys(false).isEmpty()) {
+			ElevatorPlugin.getInstance().getDataFile().createSection("Teleporters");
+			saveDatafile();
+		}
 	}
 
 	private static void saveDatafile() {

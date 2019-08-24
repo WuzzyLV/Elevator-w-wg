@@ -22,23 +22,29 @@ public class TeleporterCommand implements CommandExecutor {
 			add(sender);
 			break;
 		case "remove":
-			if(args[1] == null) {
+			if(args.length != 2) {
+				MessageHandler.sendMessage((Player) sender, "&cPlease specify a teleporter!");
+				break;
+			} else {
+				remove(sender, args[1].toUpperCase());
 				break;
 			}
-			remove(sender, args[1]);
-			break;
 		case "link":
-			if(args[1] == null && args[2] == null) {
+			if(args.length != 3) {
+				MessageHandler.sendMessage((Player) sender, "&cPlease specify at least two teleporters!");
+				break;
+			} else {
+				link(sender, args[1].toUpperCase(), args[2].toUpperCase());
 				break;
 			}
-			link(sender, args[1], args[2]);
-			break;
 		case "unlink":
-			if(args[1] == null) {
+			if(args.length != 2) {
+				MessageHandler.sendMessage((Player) sender, "&cPlease specify a teleporter!");
+				break;
+			} else {
+				unlink(sender, args[1].toUpperCase());
 				break;
 			}
-			unlink(sender, args[1]);
-			break;
 		case "list":
 			list(sender);
 			break;
