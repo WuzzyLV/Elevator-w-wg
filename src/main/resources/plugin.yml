@@ -1,5 +1,5 @@
 name: Elevator
-version: 2.3
+version: 2.4
 authors: [Baktus_79, Synnelele]
 main: no.vestlandetmc.elevator.ElevatorPlugin
 description: A simple elevator that uses blocks to teleport.
