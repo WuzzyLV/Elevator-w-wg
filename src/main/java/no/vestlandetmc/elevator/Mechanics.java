@@ -48,7 +48,7 @@ public class Mechanics {
 		for (double y = 2; y <= 50; y++) {
 			if(world.getBlockAt(player.getLocation().add(0.0D, y, 0.0D)).getType() == Config.BLOCK_TYPE) {
 				if(dangerBlock(player, world, y)) {
-					MessageHandler.sendAction(player, Config.ELEVATOR_DANGER);
+					MessageHandler.sendAction(player, Config.ELEVATOR_LOCALE_DANGER);
 					return false;
 				} else {
 					tpCoordinate = y;
@@ -64,7 +64,7 @@ public class Mechanics {
 		for(double y = -2; y >= -50; y--) {
 			if(world.getBlockAt(player.getLocation().add(0.0D, y, 0.0D)).getType() == Config.BLOCK_TYPE) {
 				if(dangerBlock(player, world, y)) {
-					MessageHandler.sendAction(player, Config.ELEVATOR_DANGER);
+					MessageHandler.sendAction(player, Config.ELEVATOR_LOCALE_DANGER);
 					return false;
 				} else {
 					tpCoordinate = y;

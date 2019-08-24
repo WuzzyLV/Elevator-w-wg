@@ -44,12 +44,12 @@ public class TeleporterData {
 						player.teleport(getTeleportLoc(tpName));
 						if(Config.TP_PARTICLE_ENABLE) { particleTeleporter(player); }
 						player.getWorld().playSound(player.getLocation(), "minecraft:" + Config.TP_SOUND, 1.0F, 0.7F);
-						MessageHandler.sendAction(player, Config.TP_LOCAL_INIT);
+						MessageHandler.sendAction(player, Config.TP_LOCALE_INIT);
 						this.cancel();
 						return;
 					}
 					if(Config.TP_PARTICLE_ENABLE) { particleTeleporter(player); }
-					MessageHandler.sendAction(player, MessageHandler.placeholders(Config.TP_LOCAL_WARMUP, warmupTime(player).toString(), null, null, null));
+					MessageHandler.sendAction(player, MessageHandler.placeholders(Config.TP_LOCALE_WARMUP, warmupTime(player).toString(), null, null, null));
 				}
 
 			}.runTaskTimer(ElevatorPlugin.getInstance(), 0L, 2L);
@@ -97,14 +97,14 @@ public class TeleporterData {
 		final String world = player.getLocation().getWorld().getName();
 
 		if (!Mechanics.standOnBlock(player, player.getWorld(), Config.TP_BLOCK_TYPE)) {
-			MessageHandler.sendMessage(player, Config.TP_LOCAL_UNVALID);
+			MessageHandler.sendMessage(player, Config.TP_LOCALE_UNVALID);
 			return;
 		}
 
 		final Location loc  = new Location(Bukkit.getWorld(world), locX, locY, locZ);
 
 		if(teleporterExist(loc)) {
-			MessageHandler.sendMessage(player, Config.TP_LOCAL_EXIST);
+			MessageHandler.sendMessage(player, Config.TP_LOCALE_EXIST);
 			return;
 		}
 
@@ -136,7 +136,7 @@ public class TeleporterData {
 			ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName + "." + "World", world);
 			ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName + "." + "Player", player.getUniqueId().toString());
 
-			MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.TP_LOCAL_ADDED, null, tpName, null, null));
+			MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.TP_LOCALE_ADDED, null, tpName, null, null));
 
 			saveDatafile();
 		}
@@ -144,11 +144,11 @@ public class TeleporterData {
 
 
 	public static Location getTeleportLoc(String tpName) {
-		if (ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName + "." + "Destination")) {
-			final String tpTo = ElevatorPlugin.getInstance().getDataFile().getString("Teleporters." + tpName + "." + "Destination");
-			final double locX = ElevatorPlugin.getInstance().getDataFile().getDouble("Teleporters." + tpTo + "." + "X") + 0.5D;
-			final double locY = ElevatorPlugin.getInstance().getDataFile().getDouble("Teleporters." + tpTo + "." + "Y") + 1.0D;
-			final double locZ = ElevatorPlugin.getInstance().getDataFile().getDouble("Teleporters." + tpTo + "." + "Z") + 0.5D;
+		if(ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName + ".Destination")) {
+			final String tpTo = ElevatorPlugin.getInstance().getDataFile().getString("Teleporters." + tpName + ".Destination");
+			final double locX = ElevatorPlugin.getInstance().getDataFile().getDouble("Teleporters." + tpTo + ".X") + 0.5D;
+			final double locY = ElevatorPlugin.getInstance().getDataFile().getDouble("Teleporters." + tpTo + ".Y") + 1.0D;
+			final double locZ = ElevatorPlugin.getInstance().getDataFile().getDouble("Teleporters." + tpTo + ".Z") + 0.5D;
 			final World world = Bukkit.getWorld(ElevatorPlugin.getInstance().getDataFile().getString("Teleporters." + tpTo + "." + "World"));
 			final Location tpLoc  = new Location(world, locX, locY, locZ);
 
@@ -201,37 +201,37 @@ public class TeleporterData {
 	public static void linkTeleporter(Player player, String tp1, String tp2) {
 		if(!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tp1) ||
 				!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tp2)) {
-			MessageHandler.sendMessage(player, Config.TP_LOCAL_UNEXIST);
+			MessageHandler.sendMessage(player, Config.TP_LOCALE_UNEXIST);
 			return;
 		}
 
 		if(ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tp1 + ".Destination") ||
 				ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tp2 + ".Destination")) {
-			MessageHandler.sendMessage(player, Config.TP_LOCAL_LINKEXIST);
+			MessageHandler.sendMessage(player, Config.TP_LOCALE_LINKEXIST);
 			return;
 		}
 
 		if (!checkTpOwner(player, tp1.toUpperCase(), tp2.toUpperCase())) {
-			MessageHandler.sendMessage(player, Config.TP_LOCAL_NOOWNER);
+			MessageHandler.sendMessage(player, Config.TP_LOCALE_NOOWNER);
 			return;
 		}
 
 		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tp1 + ".Destination", tp2);
 		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tp2 + ".Destination", tp1);
 
-		MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.TP_LOCAL_LINKED, null, null, tp1, tp2));
+		MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.TP_LOCALE_LINKED, null, null, tp1, tp2));
 
 		saveDatafile();
 	}
 
 	public static void deleteTeleporter(Player player, String tpName) {
 		if (!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName)) {
-			MessageHandler.sendMessage(player, Config.TP_LOCAL_UNEXIST);
+			MessageHandler.sendMessage(player, Config.TP_LOCALE_UNEXIST);
 			return;
 		}
 
 		if (!checkTpOwner(player, tpName)) {
-			MessageHandler.sendMessage(player, Config.TP_LOCAL_NOOWNER);
+			MessageHandler.sendMessage(player, Config.TP_LOCALE_NOOWNER);
 			return;
 		}
 
@@ -242,7 +242,7 @@ public class TeleporterData {
 
 		ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName, null);
 
-		MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.TP_LOCAL_REMOVED, null, tpName, null, null));
+		MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.TP_LOCALE_REMOVED, null, tpName, null, null));
 
 		saveDatafile();
 	}
@@ -264,12 +264,12 @@ public class TeleporterData {
 
 	public static void unlinkTeleporter(Player player, String tpName) {
 		if (!ElevatorPlugin.getInstance().getDataFile().contains("Teleporters." + tpName)) {
-			MessageHandler.sendMessage(player, Config.TP_LOCAL_UNEXIST);
+			MessageHandler.sendMessage(player, Config.TP_LOCALE_UNEXIST);
 			return;
 		}
 
 		if (!checkTpOwner(player, tpName)) {
-			MessageHandler.sendMessage(player, Config.TP_LOCAL_NOOWNER);
+			MessageHandler.sendMessage(player, Config.TP_LOCALE_NOOWNER);
 			return;
 		}
 
@@ -279,16 +279,16 @@ public class TeleporterData {
 			ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName + "." + "Destination", null);
 			ElevatorPlugin.getInstance().getDataFile().set("Teleporters." + tpName2 + "." + "Destination", null);
 
-			MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.TP_LOCAL_UNLINKED, null, null, tpName, tpName2));
+			MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.TP_LOCALE_UNLINKED, null, null, tpName, tpName2));
 
 			saveDatafile();
-		} else { MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.TP_LOCAL_NODEST, null, tpName, null, null)); }
+		} else { MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.TP_LOCALE_NODEST, null, tpName, null, null)); }
 	}
 
 	public static void listTP(Player player) {
 		int count = 0;
 
-		MessageHandler.sendMessage(player, Config.TP_LOCAL_LISTHEADER);
+		MessageHandler.sendMessage(player, Config.TP_LOCALE_LISTHEADER);
 		for(final String tp : ElevatorPlugin.getInstance().getDataFile().getConfigurationSection("Teleporters").getKeys(false)) {
 			final double locX = ElevatorPlugin.getInstance().getDataFile().getDouble("Teleporters." + tp + "." + "X");
 			final double locY = ElevatorPlugin.getInstance().getDataFile().getDouble("Teleporters." + tp + "." + "Y");
@@ -313,7 +313,7 @@ public class TeleporterData {
 
 		}
 
-		if(count == 0) { MessageHandler.sendMessage(player, Config.TP_LOCAL_LISTNOTP); }
+		if(count == 0) { MessageHandler.sendMessage(player, Config.TP_LOCALE_LISTNOTP); }
 	}
 
 	public static List<String> tabCompleteTp(Player player) {
@@ -350,8 +350,11 @@ public class TeleporterData {
 	public static boolean checkTpPerms(Player player) {
 		int allowedTeleporters = 0;
 		int teleporterCount = 0;
+
+		if(player.hasPermission("elevator.teleporter.bypass") || player.hasPermission("elevator.admin")) { return true; }
+
 		for(final PermissionAttachmentInfo perms : player.getEffectivePermissions()) {
-			if(perms.getPermission().replaceAll("\\d", "").equals("elevator.teleporter.set.")) {
+			if(perms.getPermission().replaceAll("\\d", "").equals("elevator.teleporter.block.")) {
 				if(Integer.parseInt(perms.getPermission().replaceAll("\\D", "")) > allowedTeleporters) {
 					allowedTeleporters = Integer.parseInt(perms.getPermission().replaceAll("\\D", ""));
 				}

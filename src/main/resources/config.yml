@@ -16,14 +16,15 @@ Hooks:
 Cooldown:
   EnableCooldown: false
   Time: 30
-  Local: '&cElevator is on cooldown. Please wait for another %time% seconds!'
-ElevatorLocal:
+  Locale: '&cElevator is on cooldown. Please wait for another %time% seconds!'
+ElevatorLocale:
   ElevatorUp: '&aGoing up'
   ElevatorDown: '&aGoing down'
   ElevatorDanger: '&4Danger! You cannot use the elevator to this location. You might die!'
   ElevatorActivated: '&aThe elevator is active'
-TeleporterLocal:
+TeleporterLocale:
   Danger: '&cDanger! The location is not safe!'
+  LinkSelf: '&cYou can''t link to the same teleporter.'
   Cancelled: '&cTeleportation cancelled!'
   Initialized: '&bTeleportation initialized'
   Warmup: '&bPlease wait &9 %time% &bseconds while the teleporter initialize! Don''t move!'
@@ -36,7 +37,7 @@ TeleporterLocal:
   Linked: '&eYou have successfully linked teleporter &6%teleport1% &ewith &6%teleport2%'
   Removed: '&eTeleporter &6%tpname% &ehas been removed'
   Unlinked: '&6%teleport1% &ehas successfully unlinked with &6%teleport2%'
-  NoDestination: '&ctpname% has no destination!'
+  NoDestination: '&c%tpname% has no destination!'
   ListHeader: '&e---- ====== [ &6Your teleporters &e] ====== ----'
   ListNoTeleporters: '&cYou don''t have any teleporters yet'
   SpecifyTeleporter: '&cPlease specify a teleporter!'
@@ -49,3 +50,6 @@ TeleporterLocal:
   HelpList: '&6/teleporter list &f- &eGet a list of all your teleporters'
   HelpRemove: '&6/teleporter remove &f- &eRemove a teleportation block'
   HelpUnlink: '&6/teleporter unlink &f[tpblock1] - &eUnlink two teleportation blocks. Only need to specify one.'
+MiscellaneousLocale:
+  Permission: "&cSorry, but you do not have permissions to do that."
+

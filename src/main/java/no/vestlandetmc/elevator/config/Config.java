@@ -19,40 +19,42 @@ public class Config extends ConfigHandler {
 	PARTICLE_TYPE;
 
 	public static String
-	ELEVATOR_UP,
-	ELEVATOR_DOWN,
-	ELEVATOR_DANGER,
-	ELEVATOR_ACTIVATED,
-	ELEVATOR_COOLDOWN,
+	ELEVATOR_LOCALE_UP,
+	ELEVATOR_LOCALE_DOWN,
+	ELEVATOR_LOCALE_DANGER,
+	ELEVATOR_LOCALE_ACTIVATED,
+	COOLDOWN_LOCALE,
 	SOUND_ACTIVATED,
 	ELEVATOR_SOUND,
 	TP_SOUND,
-	TP_LOCAL_DANGER,
-	TP_LOCAL_CANCELLED,
-	TP_LOCAL_INIT,
-	TP_LOCAL_WARMUP,
-	TP_LOCAL_UNVALID,
-	TP_LOCAL_EXIST,
-	TP_LOCAL_UNEXIST,
-	TP_LOCAL_ADDED,
-	TP_LOCAL_LINKEXIST,
-	TP_LOCAL_NOOWNER,
-	TP_LOCAL_LINKED,
-	TP_LOCAL_REMOVED,
-	TP_LOCAL_UNLINKED,
-	TP_LOCAL_NODEST,
-	TP_LOCAL_LISTHEADER,
-	TP_LOCAL_LISTNOTP,
-	TP_LOCAL_SPECIFYTP,
-	TP_LOCAL_SPECIFYMORETP,
-	TP_LOCAL_PERMBLOCK,
-	TP_LOCAL_HELPHEADER,
-	TP_LOCAL_HELPADD,
-	TP_LOCAL_HELPHELP,
-	TP_LOCAL_HELPLINK,
-	TP_LOCAL_HELPLIST,
-	TP_LOCAL_HELPREMOVE,
-	TP_LOCAL_HELPUNLINK;
+	TP_LOCALE_DANGER,
+	TP_LOCALE_LINKSELF,
+	TP_LOCALE_CANCELLED,
+	TP_LOCALE_INIT,
+	TP_LOCALE_WARMUP,
+	TP_LOCALE_UNVALID,
+	TP_LOCALE_EXIST,
+	TP_LOCALE_UNEXIST,
+	TP_LOCALE_ADDED,
+	TP_LOCALE_LINKEXIST,
+	TP_LOCALE_NOOWNER,
+	TP_LOCALE_LINKED,
+	TP_LOCALE_REMOVED,
+	TP_LOCALE_UNLINKED,
+	TP_LOCALE_NODEST,
+	TP_LOCALE_LISTHEADER,
+	TP_LOCALE_LISTNOTP,
+	TP_LOCALE_SPECIFYTP,
+	TP_LOCALE_SPECIFYMORETP,
+	TP_LOCALE_PERMBLOCK,
+	TP_LOCALE_HELPHEADER,
+	TP_LOCALE_HELPADD,
+	TP_LOCALE_HELPHELP,
+	TP_LOCALE_HELPLINK,
+	TP_LOCALE_HELPLIST,
+	TP_LOCALE_HELPREMOVE,
+	TP_LOCALE_HELPUNLINK,
+	ML_LOCALE_PERMISSION;
 
 	public static int
 	PARTICLE_COUNT,
@@ -72,10 +74,10 @@ public class Config extends ConfigHandler {
 		BLOCK_TYPE = Material.matchMaterial(getString("Elevator.BlockType").toUpperCase());
 		PARTICLE_TYPE = Particle.valueOf(getString("Elevator.ParticleType").toUpperCase());
 		PARTICLE_ENABLED = getBoolean("Elevator.EnableParticle");
-		ELEVATOR_UP = getString("ElevatorLocal.ElevatorUp");
-		ELEVATOR_DOWN = getString("ElevatorLocal.ElevatorDown");
-		ELEVATOR_DANGER = getString("ElevatorLocal.ElevatorDanger");
-		ELEVATOR_ACTIVATED = getString("ElevatorLocal.ElevatorActivated");
+		ELEVATOR_LOCALE_UP = getString("ElevatorLocale.ElevatorUp");
+		ELEVATOR_LOCALE_DOWN = getString("ElevatorLocale.ElevatorDown");
+		ELEVATOR_LOCALE_DANGER = getString("ElevatorLocale.ElevatorDanger");
+		ELEVATOR_LOCALE_ACTIVATED = getString("ElevatorLocale.ElevatorActivated");
 		ELEVATOR_SOUND = getString("Elevator.UsageSound");
 		SOUND_ACTIVATED = getString("Elevator.ActivateSound");
 		PARTICLE_COUNT = getInt("Elevator.ParticleCount");
@@ -83,38 +85,40 @@ public class Config extends ConfigHandler {
 		WORLDGUARD_HOOK = getBoolean("Hooks.WorldGuard");
 		COOLDOWN_ENABLED = getBoolean("Cooldown.EnableCooldown");
 		COOLDOWN_TIME = getInt("Cooldown.Time");
-		ELEVATOR_COOLDOWN = getString("Cooldown.Local");
+		COOLDOWN_LOCALE = getString("Cooldown.Locale");
 		TP_WARMUP_ENABLE = getBoolean("Teleporter.WarmupEnable");
 		TP_WARMUP_TIME = getInt("Teleporter.WarmupTime");
 		TP_BLOCK_TYPE = Material.matchMaterial(getString("Teleporter.BlockType").toUpperCase());
 		TP_SOUND = getString("Teleporter.UsageSound");
 		TP_PARTICLE_ENABLE = getBoolean("Teleporter.EnableParticle");
-		TP_LOCAL_DANGER = getString("TeleporterLocal.Danger");
-		TP_LOCAL_CANCELLED = getString("TeleporterLocal.Cancelled");
-		TP_LOCAL_INIT = getString("TeleporterLocal.Initialized");
-		TP_LOCAL_WARMUP = getString("TeleporterLocal.Warmup");
-		TP_LOCAL_UNVALID = getString("TeleporterLocal.UnvalidBlock");
-		TP_LOCAL_EXIST = getString("TeleporterLocal.Exist");
-		TP_LOCAL_UNEXIST = getString("TeleporterLocal.Unexist");
-		TP_LOCAL_ADDED = getString("TeleporterLocal.Added");
-		TP_LOCAL_LINKEXIST = getString("TeleporterLocal.LinkExist");
-		TP_LOCAL_NOOWNER = getString("TeleporterLocal.NoOwner");
-		TP_LOCAL_LINKED = getString("TeleporterLocal.Linked");
-		TP_LOCAL_REMOVED = getString("TeleporterLocal.Removed");
-		TP_LOCAL_UNLINKED = getString("TeleporterLocal.Unlinked");
-		TP_LOCAL_NODEST = getString("TeleporterLocal.NoDestination");
-		TP_LOCAL_LISTHEADER = getString("TeleporterLocal.ListHeader");
-		TP_LOCAL_LISTNOTP = getString("TeleporterLocal.ListNoTeleporters");
-		TP_LOCAL_SPECIFYTP = getString("TeleporterLocal.SpecifyTeleporter");
-		TP_LOCAL_SPECIFYMORETP = getString("TeleporterLocal.SpecifyMoreTeleporter");
-		TP_LOCAL_PERMBLOCK = getString("TeleporterLocal.PermissionBlocks");
-		TP_LOCAL_HELPHEADER = getString("TeleporterLocal.HelpHeader");
-		TP_LOCAL_HELPADD = getString("TeleporterLocal.HelpAdd");
-		TP_LOCAL_HELPHELP = getString("TeleporterLocal.HelpHelp");
-		TP_LOCAL_HELPLINK = getString("TeleporterLocal.HelpLink");
-		TP_LOCAL_HELPLIST = getString("TeleporterLocal.HelpList");
-		TP_LOCAL_HELPREMOVE = getString("TeleporterLocal.HelpRemove");
-		TP_LOCAL_HELPUNLINK = getString("TeleporterLocal.HelpUnlink");
+		TP_LOCALE_DANGER = getString("TeleporterLocale.Danger");
+		TP_LOCALE_CANCELLED = getString("TeleporterLocale.Cancelled");
+		TP_LOCALE_INIT = getString("TeleporterLocale.Initialized");
+		TP_LOCALE_WARMUP = getString("TeleporterLocale.Warmup");
+		TP_LOCALE_UNVALID = getString("TeleporterLocale.UnvalidBlock");
+		TP_LOCALE_EXIST = getString("TeleporterLocale.Exist");
+		TP_LOCALE_UNEXIST = getString("TeleporterLocale.Unexist");
+		TP_LOCALE_ADDED = getString("TeleporterLocale.Added");
+		TP_LOCALE_LINKEXIST = getString("TeleporterLocale.LinkExist");
+		TP_LOCALE_NOOWNER = getString("TeleporterLocale.NoOwner");
+		TP_LOCALE_LINKED = getString("TeleporterLocale.Linked");
+		TP_LOCALE_REMOVED = getString("TeleporterLocale.Removed");
+		TP_LOCALE_UNLINKED = getString("TeleporterLocale.Unlinked");
+		TP_LOCALE_NODEST = getString("TeleporterLocale.NoDestination");
+		TP_LOCALE_LISTHEADER = getString("TeleporterLocale.ListHeader");
+		TP_LOCALE_LISTNOTP = getString("TeleporterLocale.ListNoTeleporters");
+		TP_LOCALE_SPECIFYTP = getString("TeleporterLocale.SpecifyTeleporter");
+		TP_LOCALE_SPECIFYMORETP = getString("TeleporterLocale.SpecifyMoreTeleporter");
+		TP_LOCALE_PERMBLOCK = getString("TeleporterLocale.PermissionBlocks");
+		TP_LOCALE_HELPHEADER = getString("TeleporterLocale.HelpHeader");
+		TP_LOCALE_HELPADD = getString("TeleporterLocale.HelpAdd");
+		TP_LOCALE_HELPHELP = getString("TeleporterLocale.HelpHelp");
+		TP_LOCALE_HELPLINK = getString("TeleporterLocale.HelpLink");
+		TP_LOCALE_HELPLIST = getString("TeleporterLocale.HelpList");
+		TP_LOCALE_HELPREMOVE = getString("TeleporterLocale.HelpRemove");
+		TP_LOCALE_HELPUNLINK = getString("TeleporterLocale.HelpUnlink");
+		TP_LOCALE_LINKSELF = getString("TeleporterLocale.LinkSelf");
+		ML_LOCALE_PERMISSION = getString("MiscellaneousLocale.Permission");
 
 		boolean saveFile = false;
 

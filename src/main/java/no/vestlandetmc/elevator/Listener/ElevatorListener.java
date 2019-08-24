@@ -37,7 +37,7 @@ public class ElevatorListener implements Listener {
 					if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(e.getPlayer())) return; }
 					if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(e.getPlayer())) return; }
 					Mechanics.teleportUp(e.getPlayer());
-					MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_UP);
+					MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_UP);
 					Mechanics.particles(e.getPlayer(), loc);
 				}
 			}
@@ -59,7 +59,7 @@ public class ElevatorListener implements Listener {
 					if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(e.getPlayer())) return; }
 					if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(e.getPlayer())) return; }
 					Mechanics.teleportDown(e.getPlayer());
-					MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_DOWN);
+					MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_DOWN);
 					Mechanics.particles(e.getPlayer(), loc);
 				}
 			}
@@ -76,7 +76,7 @@ public class ElevatorListener implements Listener {
 						if (y + e.getBlockPlaced().getLocation().getY() > e.getBlockPlaced().getLocation().getY() + 2.0D ||
 								y + e.getBlockPlaced().getLocation().getY() < e.getBlockPlaced().getLocation().getY() - 2.0D) {
 							if (w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, y, 0.0D)).getType() == Config.BLOCK_TYPE) {
-								MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_ACTIVATED);
+								MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_ACTIVATED);
 								e.getPlayer().playSound(e.getPlayer().getLocation(), "minecraft:" + Config.SOUND_ACTIVATED, 1.0F, 1.0F);
 								break;
 							}

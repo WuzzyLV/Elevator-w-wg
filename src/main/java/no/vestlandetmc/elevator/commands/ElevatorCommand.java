@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import no.vestlandetmc.elevator.ElevatorPlugin;
+import no.vestlandetmc.elevator.config.Config;
 import no.vestlandetmc.elevator.handler.MessageHandler;
 import no.vestlandetmc.elevator.handler.UpdateNotification;
 
@@ -22,6 +23,10 @@ public class ElevatorCommand implements CommandExecutor {
 				MessageHandler.sendConsole("&3[Elevator] The config has been reloaded");
 				return true;
 			} else {
+				if(!sender.hasPermission("elevator.admin")) {
+					MessageHandler.sendMessage((Player) sender, Config.ML_LOCALE_PERMISSION);
+					return true;
+				}
 				MessageHandler.sendMessage((Player) sender, "&3[Elevator] The config has been reloaded");
 				MessageHandler.sendConsole("&3[Elevator] The config has been reloaded");
 				return true;
@@ -46,6 +51,10 @@ public class ElevatorCommand implements CommandExecutor {
 			MessageHandler.sendConsole("&bRun &3/elevator reload &bto reload the plugin.");
 			MessageHandler.sendConsole("&3---------------------------------");
 		} else {
+			if(!sender.hasPermission("elevator.admin")) {
+				MessageHandler.sendMessage((Player) sender, Config.ML_LOCALE_PERMISSION);
+				return;
+			}
 			MessageHandler.sendMessage((Player) sender, "&3---------------------------------");
 			MessageHandler.sendMessage((Player) sender, "&bElevator is running version: &3v" + UpdateNotification.getCurrentVersion());
 			if(UpdateNotification.isUpdateAvailable()) {

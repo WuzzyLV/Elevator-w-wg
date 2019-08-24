@@ -9,16 +9,8 @@ api-version: 1.13
 softdepend: [GriefPrevention, WorldGuard]
 commands:
   elevator:
-    description: Get information about the plugin and reload the plugin
-    usage: /<command>
-    permission: elevator.admin
+    description: Get plugin information or reload
+    usage: /<command> [reload]
   teleporter:
-    description: Get information about the plugin and reload the plugin
-    usage: /<command>
-    permission: elevator.teleporter.use
-permissions:
-  elevator.admin:
-    description: Gives access to all permissions
-    children:
-      elevator.use: true
-      elevator.teleporter.use: true
+    description: Create, link or remove teleporters
+    usage: /<command> [add|remove|link|unlink|list|help]
