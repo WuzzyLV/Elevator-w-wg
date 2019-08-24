@@ -1,14 +1,13 @@
-BlockType: IRON_BLOCK
-EnableParticle: true
-ParticleType: SPELL_WITCH
-ParticleCount: 20
-UsageSound: entity.enderman.teleport
-ActivateSound: entity.player.levelup
+Elevator:
+  BlockType: IRON_BLOCK
+  EnableParticle: true
+  ParticleType: SPELL_WITCH
+  ParticleCount: 20
+  UsageSound: entity.enderman.teleport
+  ActivateSound: entity.player.levelup
 Teleporter:
   BlockType: SEA_LANTERN
   EnableParticle: true
-  ParticleType: PORTAL
-  ParticleCount: 20
   UsageSound: entity.enderman.teleport
   WarmupTime: 3
 Hooks:
@@ -17,10 +16,36 @@ Hooks:
 Cooldown:
   EnableCooldown: false
   Time: 30
-ElevatorUp: "&aGoing up"
-ElevatorDown: "&aGoing down"
-ElevatorDanger: "&4Danger! You cannot use the elevator to this location. You might die!"
-ElevatorActivated: "&aThe elevator is active"
-ElevatorCooldown: "&cElevator is on cooldown. Please wait for another %time% seconds!"
-TeleporterUsage: "&aStand still for 3 seconds while the teleporter charge"
-TeleporterDanger: "&cDanger! The location is not safe! Please remove blocks away from the teleporter."
+  Local: '&cElevator is on cooldown. Please wait for another %time% seconds!'
+ElevatorLocal:
+  ElevatorUp: '&aGoing up'
+  ElevatorDown: '&aGoing down'
+  ElevatorDanger: '&4Danger! You cannot use the elevator to this location. You might die!'
+  ElevatorActivated: '&aThe elevator is active'
+TeleporterLocal:
+  Danger: '&cDanger! The location is not safe!'
+  Cancelled: '&cTeleportation cancelled!'
+  Initialized: '&bTeleportation initialized'
+  Warmup: '&bPlease wait &9 %time% &bseconds while the teleporter initialize! Don''t move!'
+  UnvalidBlock: '&cNot a valid teleporter block detected!'
+  Exist: '&cThis teleporter already exist!'
+  Unexist: '&cOne or more teleporters does not exist. Check for spelling errors.'
+  Added: '&eTeleporter has been added as &6%tpname%'
+  LinkExist: '&cOne or more teleporters are already linked.'
+  NoOwner: '&cYou are not allowed to link those teleporters.'
+  Linked: '&eYou have successfully linked teleporter &6%teleport1% &ewith &6%teleport2%'
+  Removed: '&eTeleporter &6%tpname% &ehas been removed'
+  Unlinked: '&6%teleport1% &ehas successfully unlinked with &6%teleport2%'
+  NoDestination: '&ctpname% has no destination!'
+  ListHeader: '&e---- ====== [ &6Your teleporters &e] ====== ----'
+  ListNoTeleporters: '&cYou don''t have any teleporters yet'
+  SpecifyTeleporter: '&cPlease specify a teleporter!'
+  SpecifyMoreTeleporter: '&cPlease specify at least two teleporters!'
+  PermissionBlocks: '&cYou dont have permission to set more teleporters!'
+  HelpHeader: '&e---- ====== [ &6Teleporters &e] ====== ----'
+  HelpAdd: '&6/teleporter add &f- &eSet teleportation block'
+  HelpHelp: '&6/teleporter help &f- &eThis help page'
+  HelpLink: '&6/teleporter link &f[tpblock1] [tpblock2] - &eLink two teleportation blocks togheter'
+  HelpList: '&6/teleporter list &f- &eGet a list of all your teleporters'
+  HelpRemove: '&6/teleporter remove &f- &eRemove a teleportation block'
+  HelpUnlink: '&6/teleporter unlink &f[tpblock1] - &eUnlink two teleportation blocks. Only need to specify one.'
