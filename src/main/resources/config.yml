@@ -27,7 +27,7 @@ TeleporterLocale:
   LinkSelf: '&cYou can''t link to the same teleporter.'
   Cancelled: '&cTeleportation cancelled!'
   Initialized: '&bTeleportation initialized'
-  Warmup: '&bPlease wait &9 %time% &bseconds while the teleporter initialize! Don''t move!'
+  Warmup: '&bPlease wait &9%time% &bseconds while the teleporter initialize! Don''t move!'
   UnvalidBlock: '&cNot a valid teleporter block detected!'
   Exist: '&cThis teleporter already exist!'
   Unexist: '&cOne or more teleporters does not exist. Check for spelling errors.'
@@ -51,5 +51,5 @@ TeleporterLocale:
   HelpRemove: '&6/teleporter remove &f- &eRemove a teleportation block'
   HelpUnlink: '&6/teleporter unlink &f[tpblock1] - &eUnlink two teleportation blocks. Only need to specify one.'
 MiscellaneousLocale:
-  Permission: "&cSorry, but you do not have permissions to do that."
+  Permission: '&cSorry, but you do not have permissions to do that.'
 

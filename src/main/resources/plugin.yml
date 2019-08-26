@@ -14,3 +14,4 @@ commands:
   teleporter:
     description: Create, link or remove teleporters
     usage: /<command> [add|remove|link|unlink|list|help]
+    

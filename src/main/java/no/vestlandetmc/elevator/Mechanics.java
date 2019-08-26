@@ -86,7 +86,7 @@ public class Mechanics {
 	}
 
 	public static boolean dangerBlock(Location loc) {
-		if(existMaterial(loc.getWorld().getBlockAt(loc.add(0.0D, 1.0D, 0.0D)).getType().name()) || existMaterial(loc.getWorld().getBlockAt(loc.add(0.0D, 2.0D, 0.0D)).getType().name())) {
+		if(existMaterial(loc.getWorld().getBlockAt(loc).getType().name()) || existMaterial(loc.getWorld().getBlockAt(loc.add(0.0D, 1.0D, 0.0D)).getType().name())) {
 			return true;
 		}
 
