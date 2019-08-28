@@ -1,5 +1,5 @@
 name: Elevator
-version: 2.4
+version: ${project.version}
 authors: [Baktus_79, Synnelele]
 main: no.vestlandetmc.elevator.ElevatorPlugin
 description: A simple elevator that uses blocks to teleport.
@@ -14,4 +14,47 @@ commands:
   teleporter:
     description: Create, link or remove teleporters
     usage: /<command> [add|remove|link|unlink|list|help]
-    
+permissions:
+  elevator.admin:
+    description: Allows foo command
+    default: op
+    children:
+      elevator.teleporter.basic: true
+      elevator.use: true
+      elevator.bypass: true
+  elevator.teleporter.basic:
+    description:
+    default: op
+    children:
+      elevator.teleporter.add: true
+      elevator.teleporter.link: true
+      elevator.teleporter.unlink: true
+      elevator.teleporter.remove: true
+      elevator.teleporter.list: true
+      elevator.teleporter.use: true
+  elevator.use:
+    description: Allows foo command
+    default: op
+  elevator.bypass:
+    description: Allows foo command
+    default: op
+  elevator.teleporter.add:
+    description: Allows foo command
+    default: op
+  elevator.teleporter.link:
+    description: Allows foo command
+    default: op
+  elevator.teleporter.unlink:
+    description: Allows foo command
+    default: op
+  elevator.teleporter.remove:
+    description: Allows foo command
+    default: op
+  elevator.teleporter.list:
+    description: Allows foo command
+    default: op
+  elevator.teleporter.use:
+    description: Allows foo command
+    default: op
+  
+  

@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import no.vestlandetmc.elevator.config.Config;
-import no.vestlandetmc.elevator.config.Permissions;
 import no.vestlandetmc.elevator.config.TeleporterData;
 import no.vestlandetmc.elevator.handler.GPHandler;
 import no.vestlandetmc.elevator.handler.MessageHandler;
@@ -18,6 +17,11 @@ public class TeleporterCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (!(sender instanceof Player)) {
+			MessageHandler.sendConsole("&cYou must use this command as a player in-game");
+			return true;
+		}
+
 		if (args.length == 0) {
 			help(sender);
 			return true;
@@ -63,12 +67,8 @@ public class TeleporterCommand implements CommandExecutor {
 
 	private void add(CommandSender sender) {
 		final Player player = (Player) sender;
-		if (!(player instanceof Player)) {
-			MessageHandler.sendConsole("&cYou must use this command as a player in-game");
-			return;
-		}
 
-		if(!Permissions.hasPermission(player, "add")) {
+		if(!player.hasPermission("elevator.teleporter.add")) {
 			MessageHandler.sendMessage(player, Config.ML_LOCALE_PERMISSION);
 			return;
 		}
@@ -85,12 +85,8 @@ public class TeleporterCommand implements CommandExecutor {
 
 	private void remove(CommandSender sender, String tpName) {
 		final Player player = (Player) sender;
-		if (!(player instanceof Player)) {
-			MessageHandler.sendConsole("&cYou must use this command as a player in-game");
-			return;
-		}
 
-		if(!Permissions.hasPermission(player, "remove")) {
+		if(!player.hasPermission("elevator.teleporter.remove")) {
 			MessageHandler.sendMessage(player, Config.ML_LOCALE_PERMISSION);
 			return;
 		}
@@ -100,12 +96,8 @@ public class TeleporterCommand implements CommandExecutor {
 
 	private void link(CommandSender sender, String tpName1, String tpName2) {
 		final Player player = (Player) sender;
-		if (!(player instanceof Player)) {
-			MessageHandler.sendConsole("&cYou must use this command as a player in-game");
-			return;
-		}
 
-		if(!Permissions.hasPermission(player, "link")) {
+		if(!player.hasPermission("elevator.teleporter.link")) {
 			MessageHandler.sendMessage(player, Config.ML_LOCALE_PERMISSION);
 			return;
 		}
@@ -120,12 +112,8 @@ public class TeleporterCommand implements CommandExecutor {
 
 	private void unlink(CommandSender sender, String tpName) {
 		final Player player = (Player) sender;
-		if (!(player instanceof Player)) {
-			MessageHandler.sendConsole("&cYou must use this command as a player in-game");
-			return;
-		}
 
-		if(!Permissions.hasPermission(player, "unlink")) {
+		if(!player.hasPermission("elevator.teleporter.unlink")) {
 			MessageHandler.sendMessage(player, Config.ML_LOCALE_PERMISSION);
 			return;
 		}
@@ -136,12 +124,8 @@ public class TeleporterCommand implements CommandExecutor {
 
 	private void list(CommandSender sender) {
 		final Player player = (Player) sender;
-		if (!(player instanceof Player)) {
-			MessageHandler.sendConsole("&cYou must use this command as a player in-game");
-			return;
-		}
 
-		if(!Permissions.hasPermission(player, "list")) {
+		if(!player.hasPermission("elevator.teleporter.list")) {
 			MessageHandler.sendMessage(player, Config.ML_LOCALE_PERMISSION);
 			return;
 		}
@@ -151,12 +135,8 @@ public class TeleporterCommand implements CommandExecutor {
 
 	private void help(CommandSender sender) {
 		final Player player = (Player) sender;
-		if (!(player instanceof Player)) {
-			MessageHandler.sendConsole("&cYou must use this command as a player in-game");
-			return;
-		}
 
-		if(!Permissions.hasPermission(player, "help")) {
+		if(!player.hasPermission("elevator.teleporter.use")) {
 			MessageHandler.sendMessage(player, Config.ML_LOCALE_PERMISSION);
 			return;
 		}
