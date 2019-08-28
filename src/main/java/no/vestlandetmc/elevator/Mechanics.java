@@ -3,7 +3,6 @@ package no.vestlandetmc.elevator;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 
@@ -117,12 +116,7 @@ public class Mechanics {
 
 	public static void particles(Player player, Location loc) {
 		if (Config.PARTICLE_ENABLED) {
-			player.spawnParticle(Config.PARTICLE_TYPE, loc, Config.PARTICLE_COUNT);
-			for (final Entity en : player.getNearbyEntities(10D, 10D, 10D)) {
-				if (en instanceof Player) {
-					((Player) en).getPlayer().spawnParticle(Config.PARTICLE_TYPE, loc, Config.PARTICLE_COUNT);
-				}
-			}
+			player.getWorld().spawnParticle(Config.PARTICLE_TYPE, loc, Config.PARTICLE_COUNT);
 		}
 	}
 
