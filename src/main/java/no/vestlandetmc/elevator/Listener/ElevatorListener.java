@@ -24,62 +24,59 @@ public class ElevatorListener implements Listener {
 
 	@EventHandler
 	public void onPlayerMoveEvent(PlayerMoveEvent e) {
-		if (e.getPlayer().hasPermission("elevator.use")) {
-			if (!e.getPlayer().isOnGround() && e.getPlayer().getVelocity().getY() > 0.0D) {
-				final World w = e.getPlayer().getWorld();
-				final Location loc = e.getPlayer().getLocation();
-				if(Mechanics.detectBlockUp(e.getPlayer(), w, Config.BLOCK_TYPE)) {
-					if(Config.COOLDOWN_ENABLED) {
-						if(Cooldown.elevatorUsed(e.getPlayer())) {
-							return;
-						}
+		if (!e.getPlayer().isOnGround() && e.getPlayer().getVelocity().getY() > 0.0D) {
+			final World w = e.getPlayer().getWorld();
+			final Location loc = e.getPlayer().getLocation().add(0.0D, 0.5D, 0.0D);
+			if(Mechanics.detectBlockUp(e.getPlayer(), w, Config.BLOCK_TYPE)) {
+				if(!e.getPlayer().hasPermission("elevator.use")) { return; }
+				if(Config.COOLDOWN_ENABLED) {
+					if(Cooldown.elevatorUsed(e.getPlayer())) {
+						return;
 					}
-					if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(e.getPlayer())) return; }
-					if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(e.getPlayer())) return; }
-					Mechanics.teleportUp(e.getPlayer());
-					MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_UP);
-					Mechanics.particles(e.getPlayer(), loc);
 				}
+				if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(e.getPlayer())) return; }
+				if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(e.getPlayer())) return; }
+				Mechanics.teleportUp(e.getPlayer());
+				MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_UP);
+				Mechanics.particles(e.getPlayer(), loc);
 			}
 		}
 	}
 
 	@EventHandler
 	public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent e) {
-		if (e.getPlayer().hasPermission("elevator.use")) {
-			if (!e.getPlayer().isSneaking()) {
-				final World w = e.getPlayer().getWorld();
-				final Location loc = e.getPlayer().getLocation();
-				if(Mechanics.detectBlockDown(e.getPlayer(), w, Config.BLOCK_TYPE)) {
-					if(Config.COOLDOWN_ENABLED) {
-						if(Cooldown.elevatorUsed(e.getPlayer())) {
-							return;
-						}
+		if (!e.getPlayer().isSneaking()) {
+			final World w = e.getPlayer().getWorld();
+			final Location loc = e.getPlayer().getLocation();
+			if(Mechanics.detectBlockDown(e.getPlayer(), w, Config.BLOCK_TYPE)) {
+				if(!e.getPlayer().hasPermission("elevator.use")) { return; }
+				if(Config.COOLDOWN_ENABLED) {
+					if(Cooldown.elevatorUsed(e.getPlayer())) {
+						return;
 					}
-					if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(e.getPlayer())) return; }
-					if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(e.getPlayer())) return; }
-					Mechanics.teleportDown(e.getPlayer());
-					MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_DOWN);
-					Mechanics.particles(e.getPlayer(), loc);
 				}
+				if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(e.getPlayer())) return; }
+				if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(e.getPlayer())) return; }
+				Mechanics.teleportDown(e.getPlayer());
+				MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_DOWN);
+				Mechanics.particles(e.getPlayer(), loc);
 			}
 		}
 	}
 
 	@EventHandler
 	public void BlockPlaceEvent(BlockPlaceEvent e) {
-		if(e.getPlayer().hasPermission("elevator.use")) {
-			final World w = e.getPlayer().getWorld();
-			if(Mechanics.blockExistClose(e)) {
-				if (e.getBlockPlaced().getType() == Config.BLOCK_TYPE) {
-					for (double y = 50.0D; y > -51.0D; y--) {
-						if (y + e.getBlockPlaced().getLocation().getY() > e.getBlockPlaced().getLocation().getY() + 2.0D ||
-								y + e.getBlockPlaced().getLocation().getY() < e.getBlockPlaced().getLocation().getY() - 2.0D) {
-							if (w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, y, 0.0D)).getType() == Config.BLOCK_TYPE) {
-								MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_ACTIVATED);
-								e.getPlayer().playSound(e.getPlayer().getLocation(), "minecraft:" + Config.SOUND_ACTIVATED, 1.0F, 1.0F);
-								break;
-							}
+		final World w = e.getPlayer().getWorld();
+		if(Mechanics.blockExistClose(e)) {
+			if (e.getBlockPlaced().getType() == Config.BLOCK_TYPE) {
+				if(!e.getPlayer().hasPermission("elevator.use")) { return; }
+				for (double y = 50.0D; y > -51.0D; y--) {
+					if (y + e.getBlockPlaced().getLocation().getY() > e.getBlockPlaced().getLocation().getY() + 2.0D ||
+							y + e.getBlockPlaced().getLocation().getY() < e.getBlockPlaced().getLocation().getY() - 2.0D) {
+						if (w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, y, 0.0D)).getType() == Config.BLOCK_TYPE) {
+							MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_ACTIVATED);
+							e.getPlayer().playSound(e.getPlayer().getLocation(), "minecraft:" + Config.SOUND_ACTIVATED, 1.0F, 1.0F);
+							break;
 						}
 					}
 				}
