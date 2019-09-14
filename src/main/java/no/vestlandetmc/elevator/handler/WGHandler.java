@@ -77,6 +77,7 @@ public class WGHandler {
 	}
 
 	public static boolean haveTrustTP(Player player) {
+		if (ElevatorPlugin.getInstance().getServer().getPluginManager().getPlugin("WorldGuard") == null) { return false; }
 
 		final LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
 		final Location loc = localPlayer.getLocation();

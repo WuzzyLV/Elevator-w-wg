@@ -69,6 +69,8 @@ public class GPHandler {
 	}
 
 	public static boolean haveBuildTrust(Player player, Location loc, Material material) {
+		if (ElevatorPlugin.getInstance().getServer().getPluginManager().getPlugin("GriefPrevention") == null) { return false; }
+
 		final Claim claim = GriefPrevention.instance.dataStore.getClaimAt(loc, true, null);
 
 		if(claim == null) {
