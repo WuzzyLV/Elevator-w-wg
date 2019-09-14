@@ -75,4 +75,26 @@ public class WGHandler {
 			}.runTaskLater(ElevatorPlugin.getInstance(), 20L);
 		}
 	}
+
+	public static boolean haveTrustTP(Player player) {
+
+		final LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
+		final Location loc = localPlayer.getLocation();
+
+		final RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+		final RegionQuery query = container.createQuery();
+		final ApplicableRegionSet set = query.getApplicableRegions(loc);
+
+		if(!player.isOp()) {
+			if(!set.isMemberOfAll(localPlayer)) {
+				if(!set.testState(localPlayer, Flags.BLOCK_BREAK) || !set.testState(localPlayer, Flags.BUILD) || !set.testState(localPlayer, Flags.PASSTHROUGH)) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		}
+
+		return true;
+	}
 }

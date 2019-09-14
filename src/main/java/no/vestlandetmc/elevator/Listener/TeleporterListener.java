@@ -2,6 +2,7 @@ package no.vestlandetmc.elevator.Listener;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -32,7 +33,13 @@ public class TeleporterListener implements Listener {
 
 	@EventHandler
 	public void onTeleporterBreak(BlockBreakEvent e) {
+		final Player player = e.getPlayer();
+		final Location loc = player.getLocation();
+
 		if(e.getBlock().getType() == Config.TP_BLOCK_TYPE) {
+			if(!GPHandler.haveBuildTrust(player, loc, e.getBlock().getType())) { return; }
+			if(!WGHandler.haveTrustTP(player)) { return; }
+
 			final String tpName = TeleporterData.getTeleporter(e.getBlock().getLocation());
 
 			if(tpName == null) { return; }

@@ -1,6 +1,7 @@
 package no.vestlandetmc.elevator.handler;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -60,6 +61,22 @@ public class GPHandler {
 
 				}.runTaskLater(ElevatorPlugin.getInstance(), 20L);
 			}
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+
+	public static boolean haveBuildTrust(Player player, Location loc, Material material) {
+		final Claim claim = GriefPrevention.instance.dataStore.getClaimAt(loc, true, null);
+
+		if(claim == null) {
+			return true;
+		}
+
+		final String accessDenied = claim.allowBuild(player, material);
+		if(accessDenied != null) {
 			return false;
 		} else {
 			return true;
