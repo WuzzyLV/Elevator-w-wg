@@ -8,7 +8,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import no.vestlandetmc.elevator.config.Config;
 import no.vestlandetmc.elevator.handler.MessageHandler;
-import no.vestlandetmc.elevator.handler.allowedMaterial;
 
 public class Mechanics {
 
@@ -76,7 +75,10 @@ public class Mechanics {
 	}
 
 	private static boolean dangerBlock(Player player, World world, double y) {
-		if(existMaterial(world.getBlockAt(player.getLocation().add(0.0D, (y + 1), 0.0D)).getType().name()) || existMaterial(world.getBlockAt(player.getLocation().add(0.0D, (y + 2), 0.0D)).getType().name())) {
+		if(world.getBlockAt(player.getLocation().add(0.0D, (y + 1), 0.0D)).getType().isSolid() ||
+				world.getBlockAt(player.getLocation().add(0.0D, (y + 1), 0.0D)).getType() == Material.LAVA ||
+				world.getBlockAt(player.getLocation().add(0.0D, (y + 2), 0.0D)).getType().isSolid() ||
+				world.getBlockAt(player.getLocation().add(0.0D, (y + 2), 0.0D)).getType() == Material.LAVA) {
 			return true;
 		}
 
@@ -85,21 +87,15 @@ public class Mechanics {
 	}
 
 	public static boolean dangerBlock(Location loc) {
-		if(existMaterial(loc.getWorld().getBlockAt(loc).getType().name()) || existMaterial(loc.getWorld().getBlockAt(loc.add(0.0D, 1.0D, 0.0D)).getType().name())) {
+		if(loc.getWorld().getBlockAt(loc).getType().isSolid() ||
+				loc.getWorld().getBlockAt(loc).getType() == Material.LAVA ||
+				loc.getWorld().getBlockAt(loc.add(0.0D, 1.0D, 0.0D)).getType().isSolid() ||
+				loc.getWorld().getBlockAt(loc.add(0.0D, 1.0D, 0.0D)).getType() == Material.LAVA) {
 			return true;
 		}
 
 		return false;
 
-	}
-
-	private static boolean existMaterial(String check) {
-		try {
-			allowedMaterial.valueOf(check);
-		} catch (final Throwable t) {
-			return true;
-		}
-		return false;
 	}
 
 	public static boolean blockExistClose(BlockPlaceEvent e) {
