@@ -75,24 +75,24 @@ public class Mechanics {
 	}
 
 	private static boolean dangerBlock(Player player, World world, double y) {
-		if(world.getBlockAt(player.getLocation().add(0.0D, (y + 1), 0.0D)).getType().isSolid() ||
-				world.getBlockAt(player.getLocation().add(0.0D, (y + 1), 0.0D)).getType() == Material.LAVA ||
-				world.getBlockAt(player.getLocation().add(0.0D, (y + 2), 0.0D)).getType().isSolid() ||
-				world.getBlockAt(player.getLocation().add(0.0D, (y + 2), 0.0D)).getType() == Material.LAVA) {
-			return true;
-		}
+		final Material getBlock1 = world.getBlockAt(player.getLocation().add(0.0D, (y + 1), 0.0D)).getType();
+		final Material getBlock2 = world.getBlockAt(player.getLocation().add(0.0D, (y + 2), 0.0D)).getType();
+
+		if(getBlock1.name().endsWith("SIGN") || getBlock2.name().endsWith("SIGN")) { return false; }
+
+		if(getBlock1.isSolid() || getBlock1 == Material.LAVA || getBlock2.isSolid() || getBlock2 == Material.LAVA) { return true; }
 
 		return false;
 
 	}
 
 	public static boolean dangerBlock(Location loc) {
-		if(loc.getWorld().getBlockAt(loc).getType().isSolid() ||
-				loc.getWorld().getBlockAt(loc).getType() == Material.LAVA ||
-				loc.getWorld().getBlockAt(loc.add(0.0D, 1.0D, 0.0D)).getType().isSolid() ||
-				loc.getWorld().getBlockAt(loc.add(0.0D, 1.0D, 0.0D)).getType() == Material.LAVA) {
-			return true;
-		}
+		final Material getBlock1 = loc.getWorld().getBlockAt(loc).getType();
+		final Material getBlock2 = loc.getWorld().getBlockAt(loc.add(0.0D, 1.0D, 0.0D)).getType();
+
+		if(getBlock1.name().endsWith("SIGN") || getBlock2.name().endsWith("SIGN")) { return false; }
+
+		if(getBlock1.isSolid() || getBlock1 == Material.LAVA || getBlock2.isSolid() || getBlock2 == Material.LAVA) { return true; }
 
 		return false;
 
