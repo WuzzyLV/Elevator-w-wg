@@ -1,5 +1,6 @@
 Elevator:
   BlockType: IRON_BLOCK
+  BlockDistance: 50
   EnableParticle: true
   ParticleType: SPELL_WITCH
   ParticleCount: 20

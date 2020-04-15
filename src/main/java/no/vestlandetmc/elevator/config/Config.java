@@ -59,6 +59,7 @@ public class Config extends ConfigHandler {
 	public static int
 	PARTICLE_COUNT,
 	COOLDOWN_TIME,
+	BLOCK_DISTANCE,
 	TP_WARMUP_TIME;
 
 	public static boolean
@@ -119,6 +120,7 @@ public class Config extends ConfigHandler {
 		TP_LOCALE_HELPUNLINK = getString("TeleporterLocale.HelpUnlink");
 		TP_LOCALE_LINKSELF = getString("TeleporterLocale.LinkSelf");
 		ML_LOCALE_PERMISSION = getString("MiscellaneousLocale.Permission");
+		BLOCK_DISTANCE = getInt("Elevator.BlockDistance");
 
 		boolean saveFile = false;
 

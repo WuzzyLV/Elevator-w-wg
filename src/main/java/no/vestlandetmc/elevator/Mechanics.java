@@ -43,7 +43,8 @@ public class Mechanics {
 	}
 
 	private static boolean elevatorBlockExistUp(Player player, World world) {
-		for (double y = 2; y <= 50; y++) {
+		final int distance = Config.BLOCK_DISTANCE;
+		for (double y = 2; y <= distance; y++) {
 			if(world.getBlockAt(player.getLocation().add(0.0D, y, 0.0D)).getType() == Config.BLOCK_TYPE) {
 				if(dangerBlock(player, world, y)) {
 					MessageHandler.sendAction(player, Config.ELEVATOR_LOCALE_DANGER);
@@ -59,7 +60,8 @@ public class Mechanics {
 	}
 
 	private static boolean elevatorBlockExistDown(Player player, World world) {
-		for(double y = -2; y >= -50; y--) {
+		final int distance = -Config.BLOCK_DISTANCE;
+		for(double y = -2; y >= distance; y--) {
 			if(world.getBlockAt(player.getLocation().add(0.0D, y, 0.0D)).getType() == Config.BLOCK_TYPE) {
 				if(dangerBlock(player, world, y)) {
 					MessageHandler.sendAction(player, Config.ELEVATOR_LOCALE_DANGER);
