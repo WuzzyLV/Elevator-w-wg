@@ -22,6 +22,7 @@ import no.vestlandetmc.elevator.hooks.WorldGuardHook;
 
 public class ElevatorListener implements Listener {
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerMoveEvent(PlayerMoveEvent e) {
 		if (!e.getPlayer().isOnGround() && e.getPlayer().getVelocity().getY() > 0.0D) {
