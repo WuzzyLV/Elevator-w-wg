@@ -13,10 +13,12 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import no.vestlandetmc.elevator.Mechanics;
 import no.vestlandetmc.elevator.config.Config;
 import no.vestlandetmc.elevator.handler.Cooldown;
+import no.vestlandetmc.elevator.handler.GDHandler;
 import no.vestlandetmc.elevator.handler.GPHandler;
 import no.vestlandetmc.elevator.handler.MessageHandler;
 import no.vestlandetmc.elevator.handler.UpdateNotification;
 import no.vestlandetmc.elevator.handler.WGHandler;
+import no.vestlandetmc.elevator.hooks.GriefDefenderHook;
 import no.vestlandetmc.elevator.hooks.GriefPreventionHook;
 import no.vestlandetmc.elevator.hooks.WorldGuardHook;
 
@@ -28,6 +30,7 @@ public class ElevatorListener implements Listener {
 		if (!e.getPlayer().isOnGround() && e.getPlayer().getVelocity().getY() > 0.0D) {
 			final World w = e.getPlayer().getWorld();
 			final Location loc = e.getPlayer().getLocation().add(0.0D, 0.5D, 0.0D);
+
 			if(Mechanics.detectBlockUp(e.getPlayer(), w, Config.BLOCK_TYPE)) {
 				if(!e.getPlayer().hasPermission("elevator.use")) { return; }
 				if(Config.COOLDOWN_ENABLED) {
@@ -35,8 +38,11 @@ public class ElevatorListener implements Listener {
 						return;
 					}
 				}
+
 				if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(e.getPlayer())) return; }
 				if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(e.getPlayer())) return; }
+				if(GriefDefenderHook.gdHook) { if(!GDHandler.haveTrust(e.getPlayer())) return; }
+
 				Mechanics.teleportUp(e.getPlayer());
 				MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_UP);
 				Mechanics.particles(e.getPlayer(), loc);
@@ -49,6 +55,7 @@ public class ElevatorListener implements Listener {
 		if (!e.getPlayer().isSneaking()) {
 			final World w = e.getPlayer().getWorld();
 			final Location loc = e.getPlayer().getLocation();
+
 			if(Mechanics.detectBlockDown(e.getPlayer(), w, Config.BLOCK_TYPE)) {
 				if(!e.getPlayer().hasPermission("elevator.use")) { return; }
 				if(Config.COOLDOWN_ENABLED) {
@@ -56,8 +63,11 @@ public class ElevatorListener implements Listener {
 						return;
 					}
 				}
+
 				if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(e.getPlayer())) return; }
 				if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(e.getPlayer())) return; }
+				if(GriefDefenderHook.gdHook) { if(!GDHandler.haveTrust(e.getPlayer())) return; }
+
 				Mechanics.teleportDown(e.getPlayer());
 				MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_DOWN);
 				Mechanics.particles(e.getPlayer(), loc);

@@ -13,9 +13,11 @@ import no.vestlandetmc.elevator.Mechanics;
 import no.vestlandetmc.elevator.config.Config;
 import no.vestlandetmc.elevator.config.TeleporterData;
 import no.vestlandetmc.elevator.handler.Cooldown;
+import no.vestlandetmc.elevator.handler.GDHandler;
 import no.vestlandetmc.elevator.handler.GPHandler;
 import no.vestlandetmc.elevator.handler.MessageHandler;
 import no.vestlandetmc.elevator.handler.WGHandler;
+import no.vestlandetmc.elevator.hooks.GriefDefenderHook;
 import no.vestlandetmc.elevator.hooks.GriefPreventionHook;
 import no.vestlandetmc.elevator.hooks.WorldGuardHook;
 
@@ -39,6 +41,7 @@ public class TeleporterListener implements Listener {
 		if(e.getBlock().getType() == Config.TP_BLOCK_TYPE) {
 			if(!GPHandler.haveBuildTrust(player, loc, e.getBlock().getType())) { return; }
 			if(!WGHandler.haveTrustTP(player)) { return; }
+			if(!GDHandler.haveBuildTrust(player, loc)) { return; }
 
 			final String tpName = TeleporterData.getTeleporter(e.getBlock().getLocation());
 
@@ -74,8 +77,9 @@ public class TeleporterListener implements Listener {
 								return;
 							}
 						}
-						if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(e.getPlayer()) && !GPHandler.haveTrust(e.getPlayer())) return; }
-						if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(e.getPlayer()) && !WGHandler.haveTrust(e.getPlayer())) return; }
+						if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(e.getPlayer())) return; }
+						if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(e.getPlayer())) return; }
+						if(GriefDefenderHook.gdHook) { if(!GDHandler.haveTrust(e.getPlayer())) return; }
 
 						if(TeleporterData.getTeleportLoc(tpName) != null) {
 							TeleporterData.teleporterUsed(e.getPlayer(), tpName);

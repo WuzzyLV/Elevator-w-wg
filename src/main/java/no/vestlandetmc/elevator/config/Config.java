@@ -66,6 +66,7 @@ public class Config extends ConfigHandler {
 	PARTICLE_ENABLED,
 	GRIEFPREVENTION_HOOK,
 	WORLDGUARD_HOOK,
+	GRIEFDEFENDER_HOOK,
 	COOLDOWN_ENABLED,
 	TP_PARTICLE_ENABLE,
 	TP_WARMUP_ENABLE;
@@ -83,6 +84,7 @@ public class Config extends ConfigHandler {
 		SOUND_ACTIVATED = getString("Elevator.ActivateSound");
 		PARTICLE_COUNT = getInt("Elevator.ParticleCount");
 		GRIEFPREVENTION_HOOK = getBoolean("Hooks.GriefPrevention");
+		GRIEFDEFENDER_HOOK = getBoolean("Hooks.GriefDefender");
 		WORLDGUARD_HOOK = getBoolean("Hooks.WorldGuard");
 		COOLDOWN_ENABLED = getBoolean("Cooldown.EnableCooldown");
 		COOLDOWN_TIME = getInt("Cooldown.Time");

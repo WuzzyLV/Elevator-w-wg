@@ -13,6 +13,7 @@ Teleporter:
   WarmupTime: 3
 Hooks:
   GriefPrevention: true
+  GriefDefender: true
   WorldGuard: true
 Cooldown:
   EnableCooldown: false
