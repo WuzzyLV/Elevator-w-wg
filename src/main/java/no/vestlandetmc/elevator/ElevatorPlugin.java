@@ -18,6 +18,7 @@ import no.vestlandetmc.elevator.config.Config;
 import no.vestlandetmc.elevator.config.TeleporterData;
 import no.vestlandetmc.elevator.handler.MessageHandler;
 import no.vestlandetmc.elevator.handler.UpdateNotification;
+import no.vestlandetmc.elevator.hooks.GriefDefenderHook;
 import no.vestlandetmc.elevator.hooks.GriefPreventionHook;
 import no.vestlandetmc.elevator.hooks.WorldGuardHook;
 
@@ -49,8 +50,11 @@ public class ElevatorPlugin extends JavaPlugin {
 
 		Config.initialize();
 		createDatafile();
+
 		GriefPreventionHook.gpSearch();
 		WorldGuardHook.wgSearch();
+		GriefDefenderHook.gdSearch();
+
 		TeleporterData.createSection();
 
 		if(GriefPreventionHook.gpHook) {
@@ -59,6 +63,10 @@ public class ElevatorPlugin extends JavaPlugin {
 
 		if(WorldGuardHook.wgHook) {
 			MessageHandler.sendConsole("&7[Elevator] Successfully hooked into &9WorldGuard");
+		}
+
+		if(GriefDefenderHook.gdHook) {
+			MessageHandler.sendConsole("&7[Elevator] Successfully hooked into &9GriefDefender");
 		}
 
 		this.getServer().getPluginManager().registerEvents(new ElevatorListener(), this);
