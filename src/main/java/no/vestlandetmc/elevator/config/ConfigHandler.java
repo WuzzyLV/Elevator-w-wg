@@ -1,5 +1,10 @@
 package no.vestlandetmc.elevator.config;
 
+import lombok.Setter;
+import no.vestlandetmc.elevator.ElevatorPlugin;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,15 +16,11 @@ import java.nio.file.StandardCopyOption;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import no.vestlandetmc.elevator.ElevatorPlugin;
-
 public class ConfigHandler extends YamlConfiguration {
 
 	private final File file;
-	private YamlConfiguration defaults;
+	private final YamlConfiguration defaults;
+	@Setter
 	private String pathPrefix;
 
 	public ConfigHandler(String fileName) {
@@ -27,7 +28,7 @@ public class ConfigHandler extends YamlConfiguration {
 	}
 
 	public ConfigHandler(String fileName, boolean useDefaults) {
-		if(useDefaults) {
+		if (useDefaults) {
 			this.defaults = YamlConfiguration.loadConfiguration(new InputStreamReader(ConfigHandler.class.getResourceAsStream("/" + fileName), StandardCharsets.UTF_8));
 		} else {
 			this.defaults = null;
@@ -35,10 +36,6 @@ public class ConfigHandler extends YamlConfiguration {
 
 		this.file = extract(fileName);
 		loadConfig();
-	}
-
-	public void setPathPrefix(String pathPrefix) {
-		this.pathPrefix = pathPrefix;
 	}
 
 	public void reloadConfig() {
@@ -59,9 +56,8 @@ public class ConfigHandler extends YamlConfiguration {
 			super.save(file);
 
 		} catch (final IOException ex) {
-			System.out.println("Failed to save configuration from " + file);
-
-			ex.printStackTrace();
+			ElevatorPlugin.getPlugin().getLogger().severe("Failed to save configuration from " + file);
+			ElevatorPlugin.getPlugin().getLogger().severe(ex.getMessage());
 		}
 	}
 
@@ -71,9 +67,8 @@ public class ConfigHandler extends YamlConfiguration {
 			super.load(file);
 
 		} catch (final Throwable t) {
-			System.out.println("Failed to load configuration from " + file);
-
-			t.printStackTrace();
+			ElevatorPlugin.getPlugin().getLogger().severe("Failed to load configuration from " + file);
+			ElevatorPlugin.getPlugin().getLogger().severe(t.getMessage());
 		}
 	}
 
@@ -109,7 +104,7 @@ public class ConfigHandler extends YamlConfiguration {
 	}
 
 	private File extract(String path) {
-		final JavaPlugin i = ElevatorPlugin.getInstance();
+		final JavaPlugin i = ElevatorPlugin.getPlugin();
 		final File file = new File(i.getDataFolder(), path);
 
 		if (file.exists())
@@ -122,7 +117,7 @@ public class ConfigHandler extends YamlConfiguration {
 				Files.copy(is, Paths.get(file.toURI()), StandardCopyOption.REPLACE_EXISTING);
 
 			} catch (final IOException e) {
-				e.printStackTrace();
+				ElevatorPlugin.getPlugin().getLogger().severe(e.getMessage());
 			}
 
 		return file;
@@ -130,9 +125,9 @@ public class ConfigHandler extends YamlConfiguration {
 
 	private File createFileAndDirectory(String path) {
 
-		final File datafolder = ElevatorPlugin.getInstance().getDataFolder();
+		final File datafolder = ElevatorPlugin.getPlugin().getDataFolder();
 		final int lastIndex = path.lastIndexOf('/');
-		final File directory = new File(datafolder, path.substring(0, lastIndex >= 0 ? lastIndex : 0));
+		final File directory = new File(datafolder, path.substring(0, Math.max(lastIndex, 0)));
 
 		directory.mkdirs();
 
@@ -142,9 +137,8 @@ public class ConfigHandler extends YamlConfiguration {
 			destination.createNewFile();
 
 		} catch (final IOException ex) {
-			System.out.println("Failed to create file " + path);
-
-			ex.printStackTrace();
+			ElevatorPlugin.getPlugin().getLogger().severe("Failed to create file " + path);
+			ElevatorPlugin.getPlugin().getLogger().severe(ex.getMessage());
 		}
 
 		return destination;

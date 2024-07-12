@@ -1,14 +1,6 @@
 package no.vestlandetmc.elevator;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-
+import lombok.Getter;
 import no.vestlandetmc.elevator.Listener.ElevatorListener;
 import no.vestlandetmc.elevator.Listener.TeleporterListener;
 import no.vestlandetmc.elevator.commands.ElevatorCommand;
@@ -18,23 +10,33 @@ import no.vestlandetmc.elevator.config.Config;
 import no.vestlandetmc.elevator.config.TeleporterData;
 import no.vestlandetmc.elevator.handler.MessageHandler;
 import no.vestlandetmc.elevator.handler.UpdateNotification;
+import no.vestlandetmc.elevator.handler.VersionHandler;
 import no.vestlandetmc.elevator.hooks.GriefDefenderHook;
 import no.vestlandetmc.elevator.hooks.GriefPreventionHook;
 import no.vestlandetmc.elevator.hooks.WorldGuardHook;
+import org.bstats.bukkit.Metrics;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
 
 public class ElevatorPlugin extends JavaPlugin {
 
-	private static ElevatorPlugin instance;
-	private File dataFile;
-	private FileConfiguration data;
+	@Getter
+	private static ElevatorPlugin plugin;
+	@Getter
+	private static VersionHandler versionHandler;
 
-	public static ElevatorPlugin getInstance() {
-		return instance;
-	}
+	private FileConfiguration data;
 
 	@Override
 	public void onEnable() {
-		instance = this;
+		plugin = this;
+		versionHandler = new VersionHandler();
 
 		getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "___________ __                       __                ");
 		getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "\\_   _____/|  |   _______  _______ _/  |_  ___________ ");
@@ -43,9 +45,9 @@ public class ElevatorPlugin extends JavaPlugin {
 		getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "/_______  /|____/\\___  >\\_/  (____  /__|  \\____/|__|   ");
 		getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "        \\/           \\/           \\/                   ");
 		getServer().getConsoleSender().sendMessage("");
-		getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "Elevator v" + getDescription().getVersion());
-		getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "Running on " + getServer().getName());
-		getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "Authors: " + getDescription().getAuthors().toString().replace("[", "").replace("]", "").replace(",", " and"));
+		getServer().getConsoleSender().sendMessage("Elevator v" + getDescription().getVersion());
+		getServer().getConsoleSender().sendMessage("Running on " + getServer().getName());
+		getServer().getConsoleSender().sendMessage("Authors: " + getDescription().getAuthors().toString().replace("[", "").replace("]", "").replace(",", " and"));
 		getServer().getConsoleSender().sendMessage("");
 
 		Config.initialize();
@@ -57,15 +59,15 @@ public class ElevatorPlugin extends JavaPlugin {
 
 		TeleporterData.createSection();
 
-		if(GriefPreventionHook.gpHook) {
+		if (GriefPreventionHook.gpHook) {
 			MessageHandler.sendConsole("&7[Elevator] Successfully hooked into &9GriefPrevention");
 		}
 
-		if(WorldGuardHook.wgHook) {
+		if (WorldGuardHook.wgHook) {
 			MessageHandler.sendConsole("&7[Elevator] Successfully hooked into &9WorldGuard");
 		}
 
-		if(GriefDefenderHook.gdHook) {
+		if (GriefDefenderHook.gdHook) {
 			MessageHandler.sendConsole("&7[Elevator] Successfully hooked into &9GriefDefender");
 		}
 
@@ -85,6 +87,9 @@ public class ElevatorPlugin extends JavaPlugin {
 				getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "-----------------------");
 			}
 		}.runTaskAsynchronously(this);
+
+		final int pluginId = 22614;
+		final Metrics metrics = new Metrics(this, pluginId);
 	}
 
 	public void reload() {
@@ -96,13 +101,13 @@ public class ElevatorPlugin extends JavaPlugin {
 	}
 
 	public void createDatafile() {
-		dataFile = new File(this.getDataFolder(), "data.dat");
+		File dataFile = new File(this.getDataFolder(), "data.dat");
 		if (!dataFile.exists()) {
 			dataFile.getParentFile().mkdirs();
 			try {
 				dataFile.createNewFile();
 			} catch (final IOException e) {
-				e.printStackTrace();
+				getLogger().severe(e.getMessage());
 			}
 		}
 
@@ -110,7 +115,7 @@ public class ElevatorPlugin extends JavaPlugin {
 		try {
 			data.load(dataFile);
 		} catch (IOException | InvalidConfigurationException e) {
-			e.printStackTrace();
+			getLogger().severe(e.getMessage());
 		}
 	}
 }

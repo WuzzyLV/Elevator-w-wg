@@ -1,18 +1,17 @@
 package no.vestlandetmc.elevator.handler;
 
-import java.util.HashMap;
-
+import no.vestlandetmc.elevator.ElevatorPlugin;
+import no.vestlandetmc.elevator.config.Config;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import no.vestlandetmc.elevator.ElevatorPlugin;
-import no.vestlandetmc.elevator.config.Config;
+import java.util.HashMap;
 
 public class Cooldown {
-	private static HashMap<String, Long> cooldownElevator = new HashMap<>();
+	private static final HashMap<String, Long> cooldownElevator = new HashMap<>();
 
 	public static boolean elevatorUsed(Player player) {
-		if(!cooldownElevator.containsKey(player.getUniqueId().toString())) {
+		if (!cooldownElevator.containsKey(player.getUniqueId().toString())) {
 			cooldownElevator.put(player.getUniqueId().toString(), (System.currentTimeMillis() / 1000));
 
 			new BukkitRunnable() {
@@ -21,7 +20,7 @@ public class Cooldown {
 					cooldownElevator.remove(player.getUniqueId().toString());
 				}
 
-			}.runTaskLater(ElevatorPlugin.getInstance(), (20L * Config.COOLDOWN_TIME));
+			}.runTaskLater(ElevatorPlugin.getPlugin(), (20L * Config.COOLDOWN_TIME));
 
 			return false;
 
@@ -33,7 +32,7 @@ public class Cooldown {
 	}
 
 	private static void spamPrevent(Player player) {
-		if(!MessageHandler.spamMessageCooldown.contains(player.getUniqueId().toString())) {
+		if (!MessageHandler.spamMessageCooldown.contains(player.getUniqueId().toString())) {
 			MessageHandler.sendMessage(player, MessageHandler.placeholders(Config.COOLDOWN_LOCALE, getCooldownTime(player), null, null, null));
 			MessageHandler.spamMessageCooldown.add(player.getUniqueId().toString());
 
@@ -43,7 +42,7 @@ public class Cooldown {
 					MessageHandler.spamMessageCooldown.remove(player.getUniqueId().toString());
 				}
 
-			}.runTaskLater(ElevatorPlugin.getInstance(), 20L);
+			}.runTaskLater(ElevatorPlugin.getPlugin(), 20L);
 		}
 	}
 

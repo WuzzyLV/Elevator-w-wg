@@ -8,12 +8,8 @@ public class GriefPreventionHook {
 	public static boolean gpHook;
 
 	public static void gpSearch() {
-		if(Config.GRIEFPREVENTION_HOOK) {
-			if (ElevatorPlugin.getInstance().getServer().getPluginManager().getPlugin("GriefPrevention") != null) {
-				gpHook = true;
-			} else {
-				gpHook = false;
-			}
+		if (Config.GRIEFPREVENTION_HOOK) {
+			gpHook = ElevatorPlugin.getPlugin().getServer().getPluginManager().getPlugin("GriefPrevention") != null;
 		} else {
 			gpHook = false;
 		}

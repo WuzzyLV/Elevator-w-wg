@@ -1,13 +1,12 @@
 package no.vestlandetmc.elevator.handler;
 
-import java.util.ArrayList;
-
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import no.vestlandetmc.elevator.ElevatorPlugin;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
 
 public class MessageHandler {
 
@@ -15,7 +14,7 @@ public class MessageHandler {
 	public static ArrayList<String> spamMessageCooldown = new ArrayList<>();
 
 	public static void sendAction(Player player, String message) {
-		player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(colorize(message)));
+		player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacy(colorize(message)));
 	}
 
 	public static void sendMessage(Player player, String message) {
@@ -23,7 +22,7 @@ public class MessageHandler {
 	}
 
 	public static void sendConsole(String message) {
-		ElevatorPlugin.getInstance().getServer().getConsoleSender().sendMessage(colorize(message));
+		ElevatorPlugin.getPlugin().getServer().getConsoleSender().sendMessage(colorize(message));
 	}
 
 	public static String colorize(String message) {
@@ -31,13 +30,11 @@ public class MessageHandler {
 	}
 
 	public static String placeholders(String message, String time, String tpName, String tp1, String tp2) {
-		final String converted = message.
+		return message.
 				replaceAll("%time%", time).
 				replaceAll("%tpname%", tpName).
 				replaceAll("%teleport1%", tp1).
 				replaceAll("%teleport2%", tp2);
-
-		return converted;
 
 	}
 

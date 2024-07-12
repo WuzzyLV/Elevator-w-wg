@@ -1,13 +1,12 @@
 package no.vestlandetmc.elevator.handler;
 
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import no.vestlandetmc.elevator.ElevatorPlugin;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import me.ryanhamshire.GriefPrevention.Claim;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import no.vestlandetmc.elevator.ElevatorPlugin;
 
 public class GPHandler {
 
@@ -15,13 +14,13 @@ public class GPHandler {
 		final Location loc = player.getLocation();
 		final Claim claim = GriefPrevention.instance.dataStore.getClaimAt(loc, true, null);
 
-		if(claim == null) {
+		if (claim == null) {
 			return true;
 		}
 
 		final String accessDenied = claim.allowAccess(player);
-		if(accessDenied != null) {
-			if(!MessageHandler.spamMessageClaim.contains(player.getUniqueId().toString())) {
+		if (accessDenied != null) {
+			if (!MessageHandler.spamMessageClaim.contains(player.getUniqueId().toString())) {
 				MessageHandler.sendMessage(player, "&c" + accessDenied);
 				MessageHandler.spamMessageClaim.add(player.getUniqueId().toString());
 
@@ -31,35 +30,7 @@ public class GPHandler {
 						MessageHandler.spamMessageClaim.remove(player.getUniqueId().toString());
 					}
 
-				}.runTaskLater(ElevatorPlugin.getInstance(), 20L);
-			}
-			return false;
-		} else {
-			return true;
-		}
-
-	}
-
-	public static boolean haveTrust(Player player, Location loc) {
-		final Claim claim = GriefPrevention.instance.dataStore.getClaimAt(loc, true, null);
-
-		if(claim == null) {
-			return true;
-		}
-
-		final String accessDenied = claim.allowAccess(player);
-		if(accessDenied != null) {
-			if(!MessageHandler.spamMessageClaim.contains(player.getUniqueId().toString())) {
-				MessageHandler.sendMessage(player, "&c" + accessDenied);
-				MessageHandler.spamMessageClaim.add(player.getUniqueId().toString());
-
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						MessageHandler.spamMessageClaim.remove(player.getUniqueId().toString());
-					}
-
-				}.runTaskLater(ElevatorPlugin.getInstance(), 20L);
+				}.runTaskLater(ElevatorPlugin.getPlugin(), 20L);
 			}
 			return false;
 		} else {
@@ -69,20 +40,18 @@ public class GPHandler {
 	}
 
 	public static boolean haveBuildTrust(Player player, Location loc, Material material) {
-		if (ElevatorPlugin.getInstance().getServer().getPluginManager().getPlugin("GriefPrevention") == null) { return false; }
+		if (ElevatorPlugin.getPlugin().getServer().getPluginManager().getPlugin("GriefPrevention") == null) {
+			return false;
+		}
 
 		final Claim claim = GriefPrevention.instance.dataStore.getClaimAt(loc, true, null);
 
-		if(claim == null) {
+		if (claim == null) {
 			return true;
 		}
 
 		final String accessDenied = claim.allowBuild(player, material);
-		if(accessDenied != null) {
-			return false;
-		} else {
-			return true;
-		}
+		return accessDenied == null;
 
 	}
 
