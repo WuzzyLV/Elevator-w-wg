@@ -6,7 +6,7 @@ description: A simple elevator that uses blocks to teleport.
 website: www.vestlandetmc.no
 prefix: Elevator
 api-version: 1.13
-softdepend: [ GriefPrevention, WorldGuard ]
+softdepend: [ GriefPrevention, GriefDefender, WorldGuard ]
 commands:
   elevator:
     description: Get plugin information or reload
