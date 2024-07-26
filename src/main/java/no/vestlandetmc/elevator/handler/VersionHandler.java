@@ -21,7 +21,7 @@ public class VersionHandler {
 					teleporterParticle = Particle.valueOf("REDSTONE");
 					break;
 				default:
-					Particle.valueOf("DUST");
+					teleporterParticle = Particle.valueOf("DUST");
 					break;
 			}
 		}
