@@ -2,7 +2,7 @@ Elevator:
   BlockType: IRON_BLOCK
   BlockDistance: 50
   EnableParticle: true
-  ParticleType: SPELL_WITCH
+  ParticleType: WITCH
   ParticleCount: 20
   UsageSound: entity.enderman.teleport
   ActivateSound: entity.player.levelup
