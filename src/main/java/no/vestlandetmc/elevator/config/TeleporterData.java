@@ -1,7 +1,6 @@
 package no.vestlandetmc.elevator.config;
 
 import no.vestlandetmc.elevator.ElevatorPlugin;
-import no.vestlandetmc.elevator.Mechanics;
 import no.vestlandetmc.elevator.handler.MessageHandler;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -94,7 +93,7 @@ public class TeleporterData {
 		final double locZ = player.getWorld().getBlockAt(player.getLocation()).getZ();
 		final String world = player.getLocation().getWorld().getName();
 
-		if (!Mechanics.standOnBlock(player, player.getWorld(), Config.TP_BLOCK_TYPE)) {
+		if (!standOnBlock(player)) {
 			MessageHandler.sendMessage(player, Config.TP_LOCALE_UNVALID);
 			return;
 		}
@@ -124,6 +123,10 @@ public class TeleporterData {
 				writeTpName(player, tpNumberMax, locX, locY, locZ, world, "TP1");
 			}
 		}
+	}
+
+	private static boolean standOnBlock(Player player) {
+		return player.getWorld().getBlockAt(player.getLocation().add(0.0D, -1.0D, 0.0D)).getType() == Config.TP_BLOCK_TYPE;
 	}
 
 	private static void writeTpName(Player player, int tpNumberMax, double locX, double locY, double locZ, String world, String tpName) {

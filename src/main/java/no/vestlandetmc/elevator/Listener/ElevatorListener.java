@@ -1,5 +1,11 @@
 package no.vestlandetmc.elevator.Listener;
 
+import no.vestlandetmc.elevator.Mechanics;
+import no.vestlandetmc.elevator.config.Config;
+import no.vestlandetmc.elevator.handler.*;
+import no.vestlandetmc.elevator.hooks.GriefDefenderHook;
+import no.vestlandetmc.elevator.hooks.GriefPreventionHook;
+import no.vestlandetmc.elevator.hooks.WorldGuardHook;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -10,42 +16,38 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
-import no.vestlandetmc.elevator.Mechanics;
-import no.vestlandetmc.elevator.config.Config;
-import no.vestlandetmc.elevator.handler.Cooldown;
-import no.vestlandetmc.elevator.handler.GDHandler;
-import no.vestlandetmc.elevator.handler.GPHandler;
-import no.vestlandetmc.elevator.handler.MessageHandler;
-import no.vestlandetmc.elevator.handler.UpdateNotification;
-import no.vestlandetmc.elevator.handler.WGHandler;
-import no.vestlandetmc.elevator.hooks.GriefDefenderHook;
-import no.vestlandetmc.elevator.hooks.GriefPreventionHook;
-import no.vestlandetmc.elevator.hooks.WorldGuardHook;
-
 public class ElevatorListener implements Listener {
 
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerMoveEvent(PlayerMoveEvent e) {
 		if (!e.getPlayer().isOnGround() && e.getPlayer().getVelocity().getY() > 0.0D) {
-			final World w = e.getPlayer().getWorld();
-			final Location loc = e.getPlayer().getLocation().add(0.0D, 0.5D, 0.0D);
+			final Location tpLocation = Mechanics.getElevatorLocationUp(e.getPlayer());
 
-			if(Mechanics.detectBlockUp(e.getPlayer(), w, Config.BLOCK_TYPE)) {
-				if(!e.getPlayer().hasPermission("elevator.use")) { return; }
-				if(Config.COOLDOWN_ENABLED) {
-					if(Cooldown.elevatorUsed(e.getPlayer())) {
+			if (tpLocation != null) {
+				if (!e.getPlayer().hasPermission("elevator.use")) {
+					return;
+				}
+
+				if (Config.COOLDOWN_ENABLED) {
+					if (Cooldown.elevatorUsed(e.getPlayer())) {
 						return;
 					}
 				}
 
-				if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(e.getPlayer())) return; }
-				if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(e.getPlayer())) return; }
-				if(GriefDefenderHook.gdHook) { if(!GDHandler.haveTrust(e.getPlayer())) return; }
+				if (GriefPreventionHook.gpHook) {
+					if (!GPHandler.haveTrust(e.getPlayer())) return;
+				}
+				if (WorldGuardHook.wgHook) {
+					if (!WGHandler.haveTrust(e.getPlayer())) return;
+				}
+				if (GriefDefenderHook.gdHook) {
+					if (!GDHandler.haveTrust(e.getPlayer())) return;
+				}
 
-				Mechanics.teleportUp(e.getPlayer());
+				Mechanics.teleport(e.getPlayer(), tpLocation);
 				MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_UP);
-				Mechanics.particles(e.getPlayer(), loc);
+				Mechanics.setParticles(e.getPlayer());
 			}
 		}
 	}
@@ -53,24 +55,31 @@ public class ElevatorListener implements Listener {
 	@EventHandler
 	public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent e) {
 		if (!e.getPlayer().isSneaking()) {
-			final World w = e.getPlayer().getWorld();
-			final Location loc = e.getPlayer().getLocation();
+			final Location tpLocation = Mechanics.getElevatorLocationDown(e.getPlayer());
 
-			if(Mechanics.detectBlockDown(e.getPlayer(), w, Config.BLOCK_TYPE)) {
-				if(!e.getPlayer().hasPermission("elevator.use")) { return; }
-				if(Config.COOLDOWN_ENABLED) {
-					if(Cooldown.elevatorUsed(e.getPlayer())) {
+			if (tpLocation != null) {
+				if (!e.getPlayer().hasPermission("elevator.use")) {
+					return;
+				}
+				if (Config.COOLDOWN_ENABLED) {
+					if (Cooldown.elevatorUsed(e.getPlayer())) {
 						return;
 					}
 				}
 
-				if(GriefPreventionHook.gpHook) { if(!GPHandler.haveTrust(e.getPlayer())) return; }
-				if(WorldGuardHook.wgHook) { if(!WGHandler.haveTrust(e.getPlayer())) return; }
-				if(GriefDefenderHook.gdHook) { if(!GDHandler.haveTrust(e.getPlayer())) return; }
+				if (GriefPreventionHook.gpHook) {
+					if (!GPHandler.haveTrust(e.getPlayer())) return;
+				}
+				if (WorldGuardHook.wgHook) {
+					if (!WGHandler.haveTrust(e.getPlayer())) return;
+				}
+				if (GriefDefenderHook.gdHook) {
+					if (!GDHandler.haveTrust(e.getPlayer())) return;
+				}
 
-				Mechanics.teleportDown(e.getPlayer());
+				Mechanics.teleport(e.getPlayer(), tpLocation);
 				MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_DOWN);
-				Mechanics.particles(e.getPlayer(), loc);
+				Mechanics.setParticles(e.getPlayer());
 			}
 		}
 	}
@@ -78,9 +87,12 @@ public class ElevatorListener implements Listener {
 	@EventHandler
 	public void BlockPlaceEvent(BlockPlaceEvent e) {
 		final World w = e.getPlayer().getWorld();
-		if(Mechanics.blockExistClose(e)) {
+
+		if (blockExistClose(e)) {
 			if (e.getBlockPlaced().getType() == Config.BLOCK_TYPE) {
-				if(!e.getPlayer().hasPermission("elevator.use")) { return; }
+				if (!e.getPlayer().hasPermission("elevator.use")) {
+					return;
+				}
 				for (double y = 50.0D; y > -51.0D; y--) {
 					if (y + e.getBlockPlaced().getLocation().getY() > e.getBlockPlaced().getLocation().getY() + 2.0D ||
 							y + e.getBlockPlaced().getLocation().getY() < e.getBlockPlaced().getLocation().getY() - 2.0D) {
@@ -99,8 +111,8 @@ public class ElevatorListener implements Listener {
 	public void playerJoin(PlayerJoinEvent p) {
 		final Player player = p.getPlayer();
 
-		if(player.isOp()) {
-			if(UpdateNotification.isUpdateAvailable()) {
+		if (player.isOp()) {
+			if (UpdateNotification.isUpdateAvailable()) {
 				MessageHandler.sendMessage(player, "&a------------------------------------");
 				MessageHandler.sendMessage(player, "&aElevator is outdated. Update is available!");
 				MessageHandler.sendMessage(player, "&aYour version is &a&l " + UpdateNotification.getCurrentVersion() + " &aand can be updated to version &a&l" + UpdateNotification.getLatestVersion());
@@ -108,5 +120,13 @@ public class ElevatorListener implements Listener {
 				MessageHandler.sendMessage(player, "&a------------------------------------");
 			}
 		}
+	}
+
+	private boolean blockExistClose(BlockPlaceEvent e) {
+		final World w = e.getPlayer().getWorld();
+		return w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, +1.0D, 0.0D)).getType() != Config.BLOCK_TYPE &&
+				w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, +2.0D, 0.0D)).getType() != Config.BLOCK_TYPE &&
+				w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, -1.0D, 0.0D)).getType() != Config.BLOCK_TYPE &&
+				w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, -2.0D, 0.0D)).getType() != Config.BLOCK_TYPE;
 	}
 }
