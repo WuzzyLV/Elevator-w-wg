@@ -22,7 +22,7 @@ public class Mechanics {
 					MessageHandler.sendAction(player, Config.ELEVATOR_LOCALE_DANGER);
 					return null;
 				} else {
-					final Location tpCoordinate = block.getLocation().add(0D, 1D, 0D);
+					final Location tpCoordinate = block.getLocation().add(0.5, 1D, 0.5);
 					tpCoordinate.setPitch(player.getLocation().getPitch());
 					tpCoordinate.setYaw(player.getLocation().getYaw());
 					return tpCoordinate;
@@ -42,7 +42,7 @@ public class Mechanics {
 					MessageHandler.sendAction(player, Config.ELEVATOR_LOCALE_DANGER);
 					return null;
 				} else {
-					final Location tpCoordinate = block.getLocation().add(0D, 1D, 0D);
+					final Location tpCoordinate = block.getLocation().add(0.5, 1D, 0.5);
 					tpCoordinate.setPitch(player.getLocation().getPitch());
 					tpCoordinate.setYaw(player.getLocation().getYaw());
 					return tpCoordinate;
