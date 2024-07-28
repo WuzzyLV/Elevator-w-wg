@@ -1,9 +1,8 @@
 package no.vestlandetmc.elevator.config;
 
+import no.vestlandetmc.elevator.handler.MessageHandler;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-
-import no.vestlandetmc.elevator.handler.MessageHandler;
 
 public class Config extends ConfigHandler {
 
@@ -12,68 +11,68 @@ public class Config extends ConfigHandler {
 	}
 
 	public static Material
-	BLOCK_TYPE,
-	TP_BLOCK_TYPE;
+			ELEVATOR_BLOCK_TYPE,
+			TP_BLOCK_TYPE;
 
 	public static Particle
-	PARTICLE_TYPE;
+			PARTICLE_TYPE;
 
 	public static String
-	ELEVATOR_LOCALE_UP,
-	ELEVATOR_LOCALE_DOWN,
-	ELEVATOR_LOCALE_DANGER,
-	ELEVATOR_LOCALE_ACTIVATED,
-	COOLDOWN_LOCALE,
-	SOUND_ACTIVATED,
-	ELEVATOR_SOUND,
-	TP_SOUND,
-	TP_LOCALE_DANGER,
-	TP_LOCALE_LINKSELF,
-	TP_LOCALE_CANCELLED,
-	TP_LOCALE_INIT,
-	TP_LOCALE_WARMUP,
-	TP_LOCALE_UNVALID,
-	TP_LOCALE_EXIST,
-	TP_LOCALE_UNEXIST,
-	TP_LOCALE_ADDED,
-	TP_LOCALE_LINKEXIST,
-	TP_LOCALE_NOOWNER,
-	TP_LOCALE_LINKED,
-	TP_LOCALE_REMOVED,
-	TP_LOCALE_UNLINKED,
-	TP_LOCALE_NODEST,
-	TP_LOCALE_LISTHEADER,
-	TP_LOCALE_LISTNOTP,
-	TP_LOCALE_SPECIFYTP,
-	TP_LOCALE_SPECIFYMORETP,
-	TP_LOCALE_PERMBLOCK,
-	TP_LOCALE_HELPHEADER,
-	TP_LOCALE_HELPADD,
-	TP_LOCALE_HELPHELP,
-	TP_LOCALE_HELPLINK,
-	TP_LOCALE_HELPLIST,
-	TP_LOCALE_HELPREMOVE,
-	TP_LOCALE_HELPUNLINK,
-	ML_LOCALE_PERMISSION;
+			ELEVATOR_LOCALE_UP,
+			ELEVATOR_LOCALE_DOWN,
+			ELEVATOR_LOCALE_DANGER,
+			ELEVATOR_LOCALE_ACTIVATED,
+			COOLDOWN_LOCALE,
+			SOUND_ACTIVATED,
+			ELEVATOR_SOUND,
+			TP_SOUND,
+			TP_LOCALE_DANGER,
+			TP_LOCALE_LINKSELF,
+			TP_LOCALE_CANCELLED,
+			TP_LOCALE_INIT,
+			TP_LOCALE_WARMUP,
+			TP_LOCALE_UNVALID,
+			TP_LOCALE_EXIST,
+			TP_LOCALE_UNEXIST,
+			TP_LOCALE_ADDED,
+			TP_LOCALE_LINKEXIST,
+			TP_LOCALE_NOOWNER,
+			TP_LOCALE_LINKED,
+			TP_LOCALE_REMOVED,
+			TP_LOCALE_UNLINKED,
+			TP_LOCALE_NODEST,
+			TP_LOCALE_LISTHEADER,
+			TP_LOCALE_LISTNOTP,
+			TP_LOCALE_SPECIFYTP,
+			TP_LOCALE_SPECIFYMORETP,
+			TP_LOCALE_PERMBLOCK,
+			TP_LOCALE_HELPHEADER,
+			TP_LOCALE_HELPADD,
+			TP_LOCALE_HELPHELP,
+			TP_LOCALE_HELPLINK,
+			TP_LOCALE_HELPLIST,
+			TP_LOCALE_HELPREMOVE,
+			TP_LOCALE_HELPUNLINK,
+			ML_LOCALE_PERMISSION;
 
 	public static int
-	PARTICLE_COUNT,
-	COOLDOWN_TIME,
-	BLOCK_DISTANCE,
-	TP_WARMUP_TIME;
+			PARTICLE_COUNT,
+			COOLDOWN_TIME,
+			BLOCK_DISTANCE,
+			TP_WARMUP_TIME;
 
 	public static boolean
-	PARTICLE_ENABLED,
-	GRIEFPREVENTION_HOOK,
-	WORLDGUARD_HOOK,
-	GRIEFDEFENDER_HOOK,
-	COOLDOWN_ENABLED,
-	TP_PARTICLE_ENABLE,
-	TP_WARMUP_ENABLE;
+			PARTICLE_ENABLED,
+			GRIEFPREVENTION_HOOK,
+			WORLDGUARD_HOOK,
+			GRIEFDEFENDER_HOOK,
+			COOLDOWN_ENABLED,
+			TP_PARTICLE_ENABLE,
+			TP_WARMUP_ENABLE;
 
 	private void onLoad() {
 
-		BLOCK_TYPE = Material.matchMaterial(getString("Elevator.BlockType").toUpperCase());
+		ELEVATOR_BLOCK_TYPE = Material.matchMaterial(getString("Elevator.BlockType").toUpperCase());
 		PARTICLE_TYPE = Particle.valueOf(getString("Elevator.ParticleType").toUpperCase());
 		PARTICLE_ENABLED = getBoolean("Elevator.EnableParticle");
 		ELEVATOR_LOCALE_UP = getString("ElevatorLocale.ElevatorUp");
@@ -127,62 +126,62 @@ public class Config extends ConfigHandler {
 		boolean saveFile = false;
 
 		//Cleanup old path in config file
-		if(contains("ElevatorUp")) {
+		if (contains("ElevatorUp")) {
 			set("ElevatorUp", null);
 			saveFile = true;
 		}
 
-		if(contains("ElevatorDown")) {
+		if (contains("ElevatorDown")) {
 			set("ElevatorDown", null);
 			saveFile = true;
 		}
 
-		if(contains("ElevatorDanger")) {
+		if (contains("ElevatorDanger")) {
 			set("ElevatorDanger", null);
 			saveFile = true;
 		}
 
-		if(contains("ElevatorActivated")) {
+		if (contains("ElevatorActivated")) {
 			set("ElevatorActivated", null);
 			saveFile = true;
 		}
 
-		if(contains("ElevatorCooldown")) {
+		if (contains("ElevatorCooldown")) {
 			set("ElevatorCooldown", null);
 			saveFile = true;
 		}
 
-		if(contains("BlockType")) {
+		if (contains("BlockType")) {
 			set("BlockType", null);
 			saveFile = true;
 		}
 
-		if(contains("EnableParticle")) {
+		if (contains("EnableParticle")) {
 			set("EnableParticle", null);
 			saveFile = true;
 		}
 
-		if(contains("ParticleType")) {
+		if (contains("ParticleType")) {
 			set("ParticleType", null);
 			saveFile = true;
 		}
 
-		if(contains("ParticleCount")) {
+		if (contains("ParticleCount")) {
 			set("ParticleCount", null);
 			saveFile = true;
 		}
 
-		if(contains("UsageSound")) {
+		if (contains("UsageSound")) {
 			set("UsageSound", null);
 			saveFile = true;
 		}
 
-		if(contains("ActivateSound")) {
+		if (contains("ActivateSound")) {
 			set("ActivateSound", null);
 			saveFile = true;
 		}
 
-		if(saveFile) {
+		if (saveFile) {
 			saveConfig();
 			MessageHandler.sendConsole("&7[Elevator] &6The config file has been cleaned. Please check the config file for changes.");
 		}
@@ -196,20 +195,20 @@ public class Config extends ConfigHandler {
 	}
 
 	private void sendInfo() {
-		if(PARTICLE_ENABLED) {
+		if (PARTICLE_ENABLED) {
 			MessageHandler.sendConsole("&7[Elevator] &9Enabling &7particles for elevators");
-			MessageHandler.sendConsole("&7[Elevator] Using &9" +  PARTICLE_TYPE.toString().replace("_", " ") + " &7as particle for elevators");
+			MessageHandler.sendConsole("&7[Elevator] Using &9" + PARTICLE_TYPE.toString().replace("_", " ") + " &7as particle for elevators");
 		} else {
 			MessageHandler.sendConsole("&7[Elevator] &cDisabling &7particles for elevators");
 		}
 
-		if(TP_PARTICLE_ENABLE) {
+		if (TP_PARTICLE_ENABLE) {
 			MessageHandler.sendConsole("&7[Elevator] &9Enabling &7particles for teleporters");
 		} else {
 			MessageHandler.sendConsole("&7[Elevator] &cDisabling &7particles for teleporters");
 		}
 
-		MessageHandler.sendConsole("&7[Elevator] Using &9" + BLOCK_TYPE.name().replace("_", " ") + " &7as elevator block");
+		MessageHandler.sendConsole("&7[Elevator] Using &9" + ELEVATOR_BLOCK_TYPE.name().replace("_", " ") + " &7as elevator block");
 		MessageHandler.sendConsole("&7[Elevator] Using &9" + TP_BLOCK_TYPE.name().replace("_", " ") + " &7as teleporter block");
 		MessageHandler.sendConsole("&7[Elevator] Using the sound &9" + SOUND_ACTIVATED + " &7on activate elevator");
 		MessageHandler.sendConsole("&7[Elevator] Using the sound &9" + ELEVATOR_SOUND + " &7when using elevator");
