@@ -6,6 +6,7 @@ import no.vestlandetmc.elevator.handler.*;
 import no.vestlandetmc.elevator.hooks.GriefDefenderHook;
 import no.vestlandetmc.elevator.hooks.GriefPreventionHook;
 import no.vestlandetmc.elevator.hooks.WorldGuardHook;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -22,6 +23,10 @@ public class ElevatorListener implements Listener {
 	@EventHandler
 	public void onPlayerMoveEvent(PlayerMoveEvent e) {
 		if (!e.getPlayer().isOnGround() && e.getPlayer().getVelocity().getY() > 0.0D) {
+			if (e.getPlayer().getGameMode() == GameMode.SPECTATOR) {
+				return;
+			}
+
 			final Location tpLocation = Mechanics.getElevatorLocationUp(e.getPlayer());
 
 			if (tpLocation != null) {
@@ -55,6 +60,10 @@ public class ElevatorListener implements Listener {
 	@EventHandler
 	public void onPlayerToggleSneakEvent(PlayerToggleSneakEvent e) {
 		if (!e.getPlayer().isSneaking()) {
+			if (e.getPlayer().getGameMode() == GameMode.SPECTATOR) {
+				return;
+			}
+
 			final Location tpLocation = Mechanics.getElevatorLocationDown(e.getPlayer());
 
 			if (tpLocation != null) {
