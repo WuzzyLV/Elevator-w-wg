@@ -17,7 +17,7 @@ public class Mechanics {
 		final int distance = Config.BLOCK_DISTANCE;
 		for (double y = 2; y <= distance; y++) {
 			final Block block = player.getWorld().getBlockAt(player.getLocation().add(0.0D, y, 0.0D));
-			if (block.getType() == Config.BLOCK_TYPE) {
+			if (block.getType() == Config.ELEVATOR_BLOCK_TYPE) {
 				if (dangerBlock(block.getLocation())) {
 					MessageHandler.sendAction(player, Config.ELEVATOR_LOCALE_DANGER);
 					return null;
@@ -37,7 +37,7 @@ public class Mechanics {
 		final int distance = -Config.BLOCK_DISTANCE;
 		for (double y = -2; y >= distance; y--) {
 			final Block block = player.getWorld().getBlockAt(player.getLocation().add(0.0D, y, 0.0D));
-			if (block.getType() == Config.BLOCK_TYPE) {
+			if (block.getType() == Config.ELEVATOR_BLOCK_TYPE) {
 				if (dangerBlock(block.getLocation())) {
 					MessageHandler.sendAction(player, Config.ELEVATOR_LOCALE_DANGER);
 					return null;
@@ -55,7 +55,7 @@ public class Mechanics {
 
 	public static boolean dangerBlock(Location location) {
 		final Material getBlock1 = location.getWorld().getBlockAt(location.add(0.0D, 1.0D, 0.0D)).getType();
-		final Material getBlock2 = location.getWorld().getBlockAt(location.add(0.0D, 2.0D, 0.0D)).getType();
+		final Material getBlock2 = location.getWorld().getBlockAt(location.add(0.0D, 1.0D, 0.0D)).getType();
 
 		if (getBlock1.name().endsWith("SIGN") || getBlock2.name().endsWith("SIGN")) {
 			return false;

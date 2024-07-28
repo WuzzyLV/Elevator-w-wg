@@ -27,6 +27,10 @@ public class ElevatorListener implements Listener {
 				return;
 			}
 
+			if (!Mechanics.standOnBlock(e.getPlayer().getLocation(), Config.ELEVATOR_BLOCK_TYPE)) {
+				return;
+			}
+
 			final Location tpLocation = Mechanics.getElevatorLocationUp(e.getPlayer());
 
 			if (tpLocation != null) {
@@ -64,6 +68,10 @@ public class ElevatorListener implements Listener {
 				return;
 			}
 
+			if (!Mechanics.standOnBlock(e.getPlayer().getLocation(), Config.ELEVATOR_BLOCK_TYPE)) {
+				return;
+			}
+
 			final Location tpLocation = Mechanics.getElevatorLocationDown(e.getPlayer());
 
 			if (tpLocation != null) {
@@ -98,14 +106,14 @@ public class ElevatorListener implements Listener {
 		final World w = e.getPlayer().getWorld();
 
 		if (blockExistClose(e)) {
-			if (e.getBlockPlaced().getType() == Config.BLOCK_TYPE) {
+			if (e.getBlockPlaced().getType() == Config.ELEVATOR_BLOCK_TYPE) {
 				if (!e.getPlayer().hasPermission("elevator.use")) {
 					return;
 				}
 				for (double y = 50.0D; y > -51.0D; y--) {
 					if (y + e.getBlockPlaced().getLocation().getY() > e.getBlockPlaced().getLocation().getY() + 2.0D ||
 							y + e.getBlockPlaced().getLocation().getY() < e.getBlockPlaced().getLocation().getY() - 2.0D) {
-						if (w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, y, 0.0D)).getType() == Config.BLOCK_TYPE) {
+						if (w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, y, 0.0D)).getType() == Config.ELEVATOR_BLOCK_TYPE) {
 							MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_ACTIVATED);
 							e.getPlayer().playSound(e.getPlayer().getLocation(), "minecraft:" + Config.SOUND_ACTIVATED, 1.0F, 1.0F);
 							break;
@@ -133,9 +141,9 @@ public class ElevatorListener implements Listener {
 
 	private boolean blockExistClose(BlockPlaceEvent e) {
 		final World w = e.getPlayer().getWorld();
-		return w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, +1.0D, 0.0D)).getType() != Config.BLOCK_TYPE &&
-				w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, +2.0D, 0.0D)).getType() != Config.BLOCK_TYPE &&
-				w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, -1.0D, 0.0D)).getType() != Config.BLOCK_TYPE &&
-				w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, -2.0D, 0.0D)).getType() != Config.BLOCK_TYPE;
+		return w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, +1.0D, 0.0D)).getType() != Config.ELEVATOR_BLOCK_TYPE &&
+				w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, +2.0D, 0.0D)).getType() != Config.ELEVATOR_BLOCK_TYPE &&
+				w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, -1.0D, 0.0D)).getType() != Config.ELEVATOR_BLOCK_TYPE &&
+				w.getBlockAt(e.getBlockPlaced().getLocation().add(0.0D, -2.0D, 0.0D)).getType() != Config.ELEVATOR_BLOCK_TYPE;
 	}
 }
