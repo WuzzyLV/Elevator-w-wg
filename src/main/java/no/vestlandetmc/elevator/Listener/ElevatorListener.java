@@ -50,9 +50,9 @@ public class ElevatorListener implements Listener {
 					if (!GDHandler.haveTrust(e.getPlayer())) return;
 				}
 
+				Mechanics.setParticles(e.getPlayer());
 				Mechanics.teleport(e.getPlayer(), tpLocation);
 				MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_UP);
-				Mechanics.setParticles(e.getPlayer());
 			}
 		}
 	}
@@ -86,9 +86,9 @@ public class ElevatorListener implements Listener {
 					if (!GDHandler.haveTrust(e.getPlayer())) return;
 				}
 
+				Mechanics.setParticles(e.getPlayer());
 				Mechanics.teleport(e.getPlayer(), tpLocation);
 				MessageHandler.sendAction(e.getPlayer(), Config.ELEVATOR_LOCALE_DOWN);
-				Mechanics.setParticles(e.getPlayer());
 			}
 		}
 	}
