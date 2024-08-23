@@ -2,20 +2,21 @@ package no.vestlandetmc.elevator.commands;
 
 import no.vestlandetmc.elevator.config.Config;
 import no.vestlandetmc.elevator.config.TeleporterData;
+import no.vestlandetmc.elevator.handler.GDHandler;
 import no.vestlandetmc.elevator.handler.GPHandler;
 import no.vestlandetmc.elevator.handler.MessageHandler;
 import no.vestlandetmc.elevator.handler.WGHandler;
-import no.vestlandetmc.elevator.hooks.GriefPreventionHook;
-import no.vestlandetmc.elevator.hooks.WorldGuardHook;
+import no.vestlandetmc.elevator.hooks.HookManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class TeleporterCommand implements CommandExecutor {
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 		if (!(sender instanceof Player player)) {
 			MessageHandler.sendConsole("&cYou must use this command as a player in-game");
 			return true;
@@ -67,11 +68,16 @@ public class TeleporterCommand implements CommandExecutor {
 			return;
 		}
 
-		if (GriefPreventionHook.gpHook) {
-			if (!GPHandler.haveTrust(player) && !GPHandler.haveTrust(player)) return;
+		if (HookManager.isGriefPreventionLoaded()) {
+			if (!GPHandler.haveTrust(player)) return;
 		}
-		if (WorldGuardHook.wgHook) {
-			if (!WGHandler.haveTrust(player) && !WGHandler.haveTrust(player)) return;
+
+		if (HookManager.isGriefDefenderLoaded()) {
+			if (!GDHandler.haveTrust(player)) return;
+		}
+
+		if (HookManager.isWorldGuardLoaded()) {
+			if (!WGHandler.haveTrust(player)) return;
 		}
 
 		if (TeleporterData.checkTpPerms(player)) {

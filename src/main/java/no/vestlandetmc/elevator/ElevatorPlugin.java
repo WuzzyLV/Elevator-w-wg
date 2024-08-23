@@ -11,9 +11,7 @@ import no.vestlandetmc.elevator.config.TeleporterData;
 import no.vestlandetmc.elevator.handler.MessageHandler;
 import no.vestlandetmc.elevator.handler.UpdateNotification;
 import no.vestlandetmc.elevator.handler.VersionHandler;
-import no.vestlandetmc.elevator.hooks.GriefDefenderHook;
-import no.vestlandetmc.elevator.hooks.GriefPreventionHook;
-import no.vestlandetmc.elevator.hooks.WorldGuardHook;
+import no.vestlandetmc.elevator.hooks.HookManager;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -38,38 +36,25 @@ public class ElevatorPlugin extends JavaPlugin {
 		plugin = this;
 		versionHandler = new VersionHandler();
 
-		getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "___________ __                       __                ");
-		getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "\\_   _____/|  |   _______  _______ _/  |_  ___________ ");
-		getServer().getConsoleSender().sendMessage(ChatColor.AQUA + " |    __)_ |  | _/ __ \\  \\/ /\\__  \\\\   __\\/  _ \\_  __ \\");
-		getServer().getConsoleSender().sendMessage(ChatColor.AQUA + " |        \\|  |_\\  ___/\\   /  / __ \\|  | (  <_> )  | \\/");
-		getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "/_______  /|____/\\___  >\\_/  (____  /__|  \\____/|__|   ");
-		getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "        \\/           \\/           \\/                   ");
-		getServer().getConsoleSender().sendMessage("");
-		getServer().getConsoleSender().sendMessage("Elevator v" + getDescription().getVersion());
-		getServer().getConsoleSender().sendMessage("Running on " + getServer().getName());
-		getServer().getConsoleSender().sendMessage("Authors: " + getDescription().getAuthors().toString().replace("[", "").replace("]", "").replace(",", " and"));
-		getServer().getConsoleSender().sendMessage("");
+		MessageHandler.sendConsole("&b___________ __                       __                ");
+		MessageHandler.sendConsole("&b\\_   _____/|  |   _______  _______ _/  |_  ___________ ");
+		MessageHandler.sendConsole("&b |    __)_ |  | _/ __ \\  \\/ /\\__  \\\\   __\\/  _ \\_  __ \\");
+		MessageHandler.sendConsole("&b |        \\|  |_\\  ___/\\   /  / __ \\|  | (  <_> )  | \\/");
+		MessageHandler.sendConsole("&b/_______  /|____/\\___  >\\_/  (____  /__|  \\____/|__|   ");
+		MessageHandler.sendConsole("&b        \\/           \\/           \\/                   ");
+		MessageHandler.sendConsole("");
+		MessageHandler.sendConsole("&bElevator v" + getDescription().getVersion());
+		MessageHandler.sendConsole("&bRunning on " + getServer().getName());
+		MessageHandler.sendConsole("&bAuthor: " + getDescription().getAuthors().toString().replace("[", "").replace("]", "").replace(",", " and"));
+		MessageHandler.sendConsole("&8&n_______________________________________________________");
+		MessageHandler.sendConsole("");
 
 		Config.initialize();
 		createDatafile();
 
-		GriefPreventionHook.gpSearch();
-		WorldGuardHook.wgSearch();
-		GriefDefenderHook.gdSearch();
-
 		TeleporterData.createSection();
-
-		if (GriefPreventionHook.gpHook) {
-			MessageHandler.sendConsole("&7[Elevator] Successfully hooked into &9GriefPrevention");
-		}
-
-		if (WorldGuardHook.wgHook) {
-			MessageHandler.sendConsole("&7[Elevator] Successfully hooked into &9WorldGuard");
-		}
-
-		if (GriefDefenderHook.gdHook) {
-			MessageHandler.sendConsole("&7[Elevator] Successfully hooked into &9GriefDefender");
-		}
+		HookManager.initialize();
+		MessageHandler.sendConsole("&8&n_______________________________________________________");
 
 		this.getServer().getPluginManager().registerEvents(new ElevatorListener(), this);
 		this.getServer().getPluginManager().registerEvents(new TeleporterListener(), this);

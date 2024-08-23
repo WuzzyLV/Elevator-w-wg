@@ -2,6 +2,7 @@ package no.vestlandetmc.elevator;
 
 import no.vestlandetmc.elevator.config.Config;
 import no.vestlandetmc.elevator.handler.MessageHandler;
+import no.vestlandetmc.elevator.hooks.VanishManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -65,7 +66,7 @@ public class Mechanics {
 	}
 
 	public static void setParticles(Player player) {
-		if (Config.PARTICLE_ENABLED) {
+		if (Config.PARTICLE_ENABLED && !VanishManager.isVanished(player)) {
 			final Location loc = player.getLocation().add(0.0D, 0.5D, 0.0D);
 			player.getWorld().spawnParticle(Config.PARTICLE_TYPE, loc, Config.PARTICLE_COUNT);
 		}

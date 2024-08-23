@@ -2,6 +2,7 @@ package no.vestlandetmc.elevator.config;
 
 import no.vestlandetmc.elevator.ElevatorPlugin;
 import no.vestlandetmc.elevator.handler.MessageHandler;
+import no.vestlandetmc.elevator.hooks.VanishManager;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
@@ -41,7 +42,7 @@ public class TeleporterData {
 						this.cancel();
 						return;
 					}
-					if (Config.TP_PARTICLE_ENABLE) {
+					if (Config.TP_PARTICLE_ENABLE && !VanishManager.isVanished(player)) {
 						particleTeleporter(player);
 					}
 					MessageHandler.sendAction(player, MessageHandler.placeholders(Config.TP_LOCALE_WARMUP, warmupTime(player).toString(), null, null, null));

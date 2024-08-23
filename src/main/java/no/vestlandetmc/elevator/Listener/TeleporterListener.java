@@ -4,9 +4,7 @@ import no.vestlandetmc.elevator.Mechanics;
 import no.vestlandetmc.elevator.config.Config;
 import no.vestlandetmc.elevator.config.TeleporterData;
 import no.vestlandetmc.elevator.handler.*;
-import no.vestlandetmc.elevator.hooks.GriefDefenderHook;
-import no.vestlandetmc.elevator.hooks.GriefPreventionHook;
-import no.vestlandetmc.elevator.hooks.WorldGuardHook;
+import no.vestlandetmc.elevator.hooks.HookManager;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -82,13 +80,13 @@ public class TeleporterListener implements Listener {
 								return;
 							}
 						}
-						if (GriefPreventionHook.gpHook) {
+						if (HookManager.isGriefPreventionLoaded()) {
 							if (!GPHandler.haveTrust(e.getPlayer())) return;
 						}
-						if (WorldGuardHook.wgHook) {
+						if (HookManager.isWorldGuardLoaded()) {
 							if (!WGHandler.haveTrust(e.getPlayer())) return;
 						}
-						if (GriefDefenderHook.gdHook) {
+						if (HookManager.isGriefDefenderLoaded()) {
 							if (!GDHandler.haveTrust(e.getPlayer())) return;
 						}
 
