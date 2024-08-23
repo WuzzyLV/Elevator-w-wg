@@ -196,22 +196,22 @@ public class Config extends ConfigHandler {
 
 	private void sendInfo() {
 		if (PARTICLE_ENABLED) {
-			MessageHandler.sendConsole("&7[Elevator] &9Enabling &7particles for elevators");
-			MessageHandler.sendConsole("&7[Elevator] Using &9" + PARTICLE_TYPE.toString().replace("_", " ") + " &7as particle for elevators");
+			MessageHandler.sendConsole("&bEnabling &7particles for elevators");
+			MessageHandler.sendConsole("&bUsing " + PARTICLE_TYPE.toString().replace("_", " ") + " &7as particle for elevators");
 		} else {
-			MessageHandler.sendConsole("&7[Elevator] &cDisabling &7particles for elevators");
+			MessageHandler.sendConsole("&cDisabling &7particles for elevators");
 		}
 
 		if (TP_PARTICLE_ENABLE) {
-			MessageHandler.sendConsole("&7[Elevator] &9Enabling &7particles for teleporters");
+			MessageHandler.sendConsole("&bEnabling &7particles for teleporters");
 		} else {
-			MessageHandler.sendConsole("&7[Elevator] &cDisabling &7particles for teleporters");
+			MessageHandler.sendConsole("&cDisabling &7particles for teleporters");
 		}
 
-		MessageHandler.sendConsole("&7[Elevator] Using &9" + ELEVATOR_BLOCK_TYPE.name().replace("_", " ") + " &7as elevator block");
-		MessageHandler.sendConsole("&7[Elevator] Using &9" + TP_BLOCK_TYPE.name().replace("_", " ") + " &7as teleporter block");
-		MessageHandler.sendConsole("&7[Elevator] Using the sound &9" + SOUND_ACTIVATED + " &7on activate elevator");
-		MessageHandler.sendConsole("&7[Elevator] Using the sound &9" + ELEVATOR_SOUND + " &7when using elevator");
-		MessageHandler.sendConsole("&7[Elevator] Using the sound &9" + TP_SOUND + " &7when using teleporters");
+		MessageHandler.sendConsole("&bUsing " + ELEVATOR_BLOCK_TYPE.name().replace("_", " ") + " &7as elevator block");
+		MessageHandler.sendConsole("&bUsing " + TP_BLOCK_TYPE.name().replace("_", " ") + " &7as teleporter block");
+		MessageHandler.sendConsole("&bUsing &7the sound &b" + SOUND_ACTIVATED + " &7on activate elevator");
+		MessageHandler.sendConsole("&bUsing &7the sound &b" + ELEVATOR_SOUND + " &7when using elevator");
+		MessageHandler.sendConsole("&bUsing &7the sound &b" + TP_SOUND + " &7when using teleporters");
 	}
 }
