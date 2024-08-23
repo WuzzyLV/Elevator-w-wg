@@ -1,12 +1,12 @@
 name: Elevator
 version: ${version}
-authors: [ Baktus_79, Synnelele ]
+authors: [ Baktus_79 ]
 main: no.vestlandetmc.elevator.ElevatorPlugin
 description: A simple elevator that uses blocks to teleport.
 website: www.vestlandetmc.no
 prefix: Elevator
 api-version: 1.13
-softdepend: [ GriefPrevention, GriefDefender, WorldGuard ]
+softdepend: [ GriefDefender, GriefPrevention, WorldGuard, CMI, Essentials, PremiumVanish, SuperVanish ]
 commands:
   elevator:
     description: Get plugin information or reload
