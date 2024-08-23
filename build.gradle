@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'no.vestlandetmc'
-version = '3.0.6'
+version = '3.0.7'
 
 repositories {
     mavenCentral()
@@ -13,18 +13,27 @@ repositories {
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url 'https://repo.glaremasters.me/repository/bloodshot/' }
     maven { url 'https://maven.enginehub.org/repo/' }
+    maven { url 'https://repo.essentialsx.net/releases/' }
 }
 
 dependencies {
+    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
+
     compileOnly 'org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT'
     compileOnly 'com.github.GriefPrevention:GriefPrevention:16.18.4'
     compileOnly 'com.griefdefender:api:2.1.0-SNAPSHOT'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.10'
+
+    compileOnly 'com.github.LeonMangler:PremiumVanishAPI:2.9.0-4'
+    compileOnly 'net.essentialsx:EssentialsX:2.20.1'
+
     implementation 'org.bstats:bstats-bukkit:3.0.2'
+    implementation 'org.jetbrains:annotations:24.1.0'
 }
 
 shadowJar {
     relocate 'org.bstats', 'no.vestlandetmc.elevator.bstats'
+    relocate 'org.jetbrains', 'no.vestlandetmc.elevator.annotations'
     archiveFileName.set('Elevator.jar')
 }
 
