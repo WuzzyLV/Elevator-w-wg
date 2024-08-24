@@ -5,14 +5,37 @@ import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.Flags;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
+import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import no.vestlandetmc.elevator.ElevatorPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class WGHandler {
+
+	public static StateFlag ELEVATOR_FLAG;
+
+	public static void registerFlag(){
+		FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
+		try {
+			StateFlag flag = new StateFlag("elevators", false);
+			registry.register(flag);
+			ELEVATOR_FLAG = flag;
+
+		}catch (FlagConflictException e){
+			Flag<?> existing = registry.get("elevators");
+			if (existing instanceof StateFlag){
+				ELEVATOR_FLAG = (StateFlag) existing;
+			}
+		}
+	}
 
 	public static boolean haveTrust(Player player) {
 
@@ -23,18 +46,17 @@ public class WGHandler {
 		final RegionQuery query = container.createQuery();
 		final ApplicableRegionSet set = query.getApplicableRegions(loc);
 
-		if (!player.isOp()) {
-			if (!set.isMemberOfAll(localPlayer)) {
-				if (!set.testState(localPlayer, Flags.USE)) {
-					sendErrorMessage(player);
-					return false;
-				} else {
-					return true;
+		AtomicBoolean allowed = new AtomicBoolean(false);
+		set.getRegions().forEach(region -> {
+			if (region.getFlag(ELEVATOR_FLAG) != null){
+				StateFlag.State flag = region.getFlag(ELEVATOR_FLAG);
+				if (flag == StateFlag.State.ALLOW){
+					allowed.set(true);
 				}
 			}
-		}
+		});
 
-		return true;
+		return allowed.get();
 	}
 
 	private static void sendErrorMessage(Player player) {

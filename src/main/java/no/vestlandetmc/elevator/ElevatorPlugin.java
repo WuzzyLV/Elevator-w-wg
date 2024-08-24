@@ -1,5 +1,10 @@
 package no.vestlandetmc.elevator;
 
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
+import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import lombok.Getter;
 import no.vestlandetmc.elevator.Listener.ElevatorListener;
 import no.vestlandetmc.elevator.Listener.TeleporterListener;
@@ -11,6 +16,7 @@ import no.vestlandetmc.elevator.config.TeleporterData;
 import no.vestlandetmc.elevator.handler.MessageHandler;
 import no.vestlandetmc.elevator.handler.UpdateNotification;
 import no.vestlandetmc.elevator.handler.VersionHandler;
+import no.vestlandetmc.elevator.handler.WGHandler;
 import no.vestlandetmc.elevator.hooks.HookManager;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
@@ -54,6 +60,10 @@ public class ElevatorPlugin extends JavaPlugin {
 
 		TeleporterData.createSection();
 		HookManager.initialize();
+//		if (HookManager.isWorldGuardLoaded()) {
+//			MessageHandler.sendConsole("&bWorldGuard is loaded, checking for flags...");
+//			WGHandler.registerFlag();
+//		}
 		MessageHandler.sendConsole("&8&n_______________________________________________________");
 
 		this.getServer().getPluginManager().registerEvents(new ElevatorListener(), this);
@@ -75,6 +85,15 @@ public class ElevatorPlugin extends JavaPlugin {
 
 		final int pluginId = 22614;
 		final Metrics metrics = new Metrics(this, pluginId);
+	}
+
+	@Override
+	public void onLoad() {
+		try {
+			WGHandler.registerFlag();
+		} catch (Exception e) {
+			// Do nothing
+		}
 	}
 
 	public void reload() {
